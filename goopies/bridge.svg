@@ -1,26 +1,51 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
 <style>
-@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes blink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.1)}}
 @keyframes wave{0%{stroke-dashoffset:60}100%{stroke-dashoffset:0}}
-@keyframes ring{0%{r:8;opacity:.8}100%{r:26;opacity:0}}
+@keyframes ring{0%{r:8;opacity:.8}100%{r:28;opacity:0}}
 .ghost{animation:floaty 3.4s ease-in-out infinite}
 .eye{animation:blink 4s infinite;transform-origin:center}
 .sig{stroke-dasharray:8 7;animation:wave 1.6s linear infinite}
 .pulse{animation:ring 2.2s ease-out infinite}
+.pulse2{animation:ring 2.2s ease-out infinite 1.1s}
 </style>
 <defs>
-<linearGradient id="t" x1="0" y1="0" x2="0" y2="1">
-<stop offset="0" stop-color="#6fe3ff"/><stop offset="1" stop-color="#1ba8d4"/>
-</linearGradient>
+<radialGradient id="cy" cx=".36" cy=".2" r="1.2">
+<stop offset="0" stop-color="#c2f3ff"/><stop offset=".4" stop-color="#5fd6f7"/>
+<stop offset=".75" stop-color="#1a9ecf"/><stop offset="1" stop-color="#0a6c96"/>
+</radialGradient>
+<radialGradient id="ao5" cx=".5" cy="1" r=".8">
+<stop offset="0" stop-color="#03405c" stop-opacity=".5"/><stop offset="1" stop-color="#03405c" stop-opacity="0"/>
+</radialGradient>
+<radialGradient id="gnd5" cx=".5" cy=".5" r=".5">
+<stop offset="0" stop-color="#000" stop-opacity=".3"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
+</radialGradient>
 </defs>
-<circle class="pulse" cx="100" cy="44" r="8" fill="none" stroke="#6fe3ff" stroke-width="2"/>
-<circle cx="100" cy="44" r="5" fill="#6fe3ff"/>
+<ellipse cx="100" cy="182" rx="50" ry="8" fill="url(#gnd5)"/>
+<circle class="pulse" cx="100" cy="42" r="8" fill="none" stroke="#6fe3ff" stroke-width="2"/>
+<circle class="pulse2" cx="100" cy="42" r="8" fill="none" stroke="#6fe3ff" stroke-width="1.5"/>
+<circle cx="100" cy="42" r="5.5" fill="#8feaff"/>
+<circle cx="98.5" cy="40.5" r="2" fill="#fff"/>
 <path class="sig" d="M100 52 C100 62 100 66 100 74" stroke="#6fe3ff" stroke-width="3" fill="none" stroke-linecap="round"/>
 <g class="ghost">
-<path fill="url(#t)" d="M100 74 C136 74 152 100 152 128 L152 164 L138 152 L124 166 L110 152 L96 166 L82 152 L68 164 L58 164 L58 128 C58 98 68 74 100 74 Z"/>
-<g class="eye"><circle cx="84" cy="116" r="8" fill="#063648"/><circle cx="86.5" cy="113.5" r="2.5" fill="#fff"/></g>
-<g class="eye"><circle cx="120" cy="116" r="8" fill="#063648"/><circle cx="122.5" cy="113.5" r="2.5" fill="#fff"/></g>
-<path d="M88 140 Q102 150 116 140" stroke="#063648" stroke-width="5" stroke-linecap="round" fill="none"/>
+<path fill="url(#cy)" d="M100 74 C136 74 152 100 152 128 L152 164 L138 152 L124 166 L110 152 L96 166 L82 152 L68 164 L58 164 L58 128 C58 98 68 74 100 74 Z"/>
+<path fill="url(#ao5)" d="M100 74 C136 74 152 100 152 128 L152 164 L138 152 L124 166 L110 152 L96 166 L82 152 L68 164 L58 164 L58 128 C58 98 68 74 100 74 Z"/>
+<ellipse cx="82" cy="90" rx="20" ry="11" fill="#fff" opacity=".65" transform="rotate(-14 82 90)"/>
+<ellipse cx="68" cy="104" rx="5" ry="3" fill="#fff" opacity=".4" transform="rotate(-18 68 104)"/>
+<path d="M138 96 A52 52 0 0 1 148 132" stroke="#bff0ff" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".45"/>
+<g class="eye">
+<ellipse cx="84" cy="118" rx="9" ry="10" fill="#043044"/>
+<circle cx="87" cy="114.5" r="3.2" fill="#fff"/>
+<circle cx="81" cy="121" r="1.5" fill="#fff" opacity=".6"/>
+</g>
+<g class="eye">
+<ellipse cx="120" cy="118" rx="9" ry="10" fill="#043044"/>
+<circle cx="123" cy="114.5" r="3.2" fill="#fff"/>
+<circle cx="117" cy="121" r="1.5" fill="#fff" opacity=".6"/>
+</g>
+<path d="M88 142 Q102 154 116 142" stroke="#043044" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+<ellipse cx="70" cy="134" rx="7" ry="4.5" fill="#5fd6f7" opacity=".5"/>
+<ellipse cx="134" cy="134" rx="7" ry="4.5" fill="#5fd6f7" opacity=".5"/>
 </g>
 </svg>

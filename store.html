@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Preorder — Nostr Onchain Pocket Signer</title>
+<meta name="description" content="Preorder the Nostr Onchain Pocket Signer. Pay the deposit on-chain, shipping details encrypted end-to-end. Ships November.">
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" type="image/png" href="/icon-192.png">
+<style>
+.step{display:flex;gap:14px;align-items:flex-start;background:var(--c1);border:1px solid var(--line);
+  border-radius:16px;padding:18px;margin-bottom:12px}
+.step.done{border-color:#2b6e4f}
+.step .n{width:30px;height:30px;border-radius:50%;background:var(--c2);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex:none}
+.step.done .n{background:#0e3a20;border-color:#2b6e4f;color:#30d158}
+.step.active{border-color:#4a4a52}
+.step h4{font-size:15.5px;margin-bottom:4px}
+.step p{color:var(--d2);font-size:13.5px}
+.step input,.step textarea{width:100%;box-sizing:border-box;background:#000;color:#fff;
+  border:1px solid var(--line);border-radius:10px;padding:11px;font-size:14px;margin-top:8px;font-family:inherit}
+.step .body{flex:1;min-width:0}
+.paybox{background:#000;border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:12px;text-align:center}
+.paybox .addr{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;word-break:break-all;color:var(--d1);margin-top:10px}
+.paybox img{border-radius:10px;background:#fff;padding:8px}
+.price{display:flex;align-items:baseline;gap:10px;margin:14px 0 4px}
+.price .big{font-size:38px;font-weight:800;letter-spacing:-.02em}
+.price .sub{color:var(--d2);font-size:14px}
+.badge{display:inline-block;background:#3b2a0a;color:#ff9f0a;border-radius:999px;padding:5px 12px;
+  font-size:12px;font-weight:600;letter-spacing:.03em}
+.ok{color:#30d158}.err{color:#ff453a}
+.mono{font-family:ui-monospace,Menlo,monospace}
+#mascot{width:150px;height:150px}
+.notcfg{background:#3b2a0a;border:1px solid #6b4a10;border-radius:14px;padding:14px;color:#ffb340;font-size:13.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a href="/" class="brand"><img src="/logo.png" alt="">Nostr Onchain</a>
+  <nav><a href="/">← All products</a><a href="/pocket-signer">About the device</a></nav>
+</header>
+
+<div class="phead pgrid">
+<div>
+  <span class="badge">Preorder — ships November 2026</span>
+  <h1>Nostr Onchain<br>Pocket Signer</h1>
+  <p>A hardware signer for Nostr and Bitcoin that fits on a keychain. Reserve
+  yours with an on-chain deposit — your shipping details travel as an
+  end-to-end encrypted Nostr message. No account, no email, no database.</p>
+  <div class="price">
+    <span class="big" id="p-usd">$99</span>
+    <span class="sub">retail · <b id="p-dep">21,000 sats</b> deposit reserves yours</span>
+  </div>
+  <p class="sub" style="color:var(--d3);font-size:12.5px">Deposit credited against the
+  final price. Refundable until your unit ships — refund goes back to the
+  address that paid.</p>
+</div>
+<div class="pmascot"><img id="mascot" src="/goopies/pocket-signer.svg" alt=""></div>
+</div>
+
+<div id="notcfg" class="notcfg hide">Store not configured yet — the operator
+must set <span class="mono">STORE_NPUB</span> in this page before orders can
+be accepted. No funds can be taken until then.</div>
+
+<section id="flow">
+  <h3>Reserve yours</h3>
+
+  <div class="step" id="s1">
+    <div class="n">1</div>
+    <div class="body">
+      <h4>Login with your Nostr key</h4>
+      <p>Your npub is your order ID. Sign in with a NIP-07 extension
+      (Pocket Signer Link, Alby, nos2x…).</p>
+      <button id="loginbtn" onclick="login()" style="margin-top:10px">Login with Nostr</button>
+      <div id="whoami" class="mono" style="font-size:12px;margin-top:8px;color:var(--d2)"></div>
+    </div>
+  </div>
+
+  <div class="step" id="s2">
+    <div class="n">2</div>
+    <div class="body">
+      <h4>Shipping details</h4>
+      <p>Encrypted to the store's key (NIP-44) — only the store can read them.
+      They never touch a server; they live inside an encrypted Nostr event.</p>
+      <input id="f-name" placeholder="Name" autocomplete="name">
+      <input id="f-addr1" placeholder="Street address" autocomplete="address-line1">
+      <input id="f-addr2" placeholder="Apt / unit (optional)" autocomplete="address-line2">
+      <input id="f-city" placeholder="City" autocomplete="address-level2">
+      <input id="f-state" placeholder="State / province" autocomplete="address-level1">
+      <input id="f-zip" placeholder="Postal code" autocomplete="postal-code">
+      <input id="f-country" placeholder="Country" autocomplete="country-name">
+      <input id="f-email" placeholder="Contact (email or npub, optional — for shipping updates)">
+    </div>
+  </div>
+
+  <div class="step" id="s3">
+    <div class="n">3</div>
+    <div class="body">
+      <h4>Pay the deposit on-chain</h4>
+      <p>Send <b id="dep2">21,000 sats</b> to the store's taproot address.
+      Pay from any wallet — or from your own npub's wallet in
+      <a href="https://nostrtx.vercel.app" style="color:var(--txt)">nostrtx</a>
+      so the payment itself proves it came from you.</p>
+      <div class="paybox hide" id="paybox">
+        <canvas id="payqr"></canvas>
+        <div class="addr" id="payaddr"></div>
+        <button class="alt" style="margin-top:10px" onclick="copyAddr(this)">Copy address</button>
+        <div id="paystat" style="margin-top:10px;font-size:13.5px;color:var(--d2)">Waiting for payment…</div>
+      </div>
+      <button id="paybtn" onclick="showPay()" style="margin-top:10px" disabled>Show deposit address</button>
+    </div>
+  </div>
+
+  <div class="step" id="s4">
+    <div class="n">4</div>
+    <div class="body">
+      <h4>Confirm your order</h4>
+      <p>Signs an encrypted order event (shipping + payment txid) with your key
+      and publishes it to relays. That signed event <i>is</i> your receipt —
+      the store can't alter it, and you can prove exactly what you submitted.</p>
+      <button id="orderbtn" onclick="submitOrder()" disabled style="margin-top:10px">Sign &amp; submit order</button>
+      <div id="orderstat" style="margin-top:10px;font-size:13.5px"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h3>FAQ</h3>
+  <details><summary>Why a deposit and not full payment?</summary>
+  <p>Hardware timelines can slip. A small deposit reserves your unit and keeps
+  the incentive honest on both sides; the balance is due when your unit ships.</p></details>
+  <details><summary>Where do my shipping details go?</summary>
+  <p>Into a NIP-44 encrypted Nostr event readable only by the store key. No
+  server, no database to breach. Delete-after-ship is the policy.</p></details>
+  <details><summary>Can I pay Lightning?</summary>
+  <p>On-chain only for preorders — the payment doubles as your proof of
+  reservation, anchored where nobody can rewrite it.</p></details>
+  <details><summary>What exactly ships in November?</summary>
+  <p>The Pocket Signer device (ESP32-S3, AMOLED touch screen, USB-C), flashed
+  and ready: on-device BIP-340 signing, taproot PSBT review, NIP-46 bridge,
+  SD-card air-gap mode. Firmware is open source.</p></details>
+</section>
+
+<footer>
+  <span>Nostr Onchain — signed by you, verified by everyone.</span>
+  <span><a href="/">← all products</a></span>
+</footer>
+</div>
+
+<script type="module">
+import * as btc from 'https://esm.sh/@scure/btc-signer@1.4.0';
+import QRCode from 'https://esm.sh/qrcode@1.5.4';
+import { nip19, nip44, finalizeEvent, getPublicKey } from 'https://esm.sh/nostr-tools@2.10.4';
+
+// ============================================================================
+// STORE CONFIG — operator must fill this in before the store can take orders.
+// STORE_NPUB's taproot address (BIP-86 key-path, same derivation as nostrtx)
+// receives deposits; orders arrive as NIP-44 encrypted events to this key.
+// ============================================================================
+const STORE_NPUB = '';                 // <-- SET ME (npub1...)
+const DEPOSIT_SATS = 21000;
+const RETAIL_USD = 99;
+const RELAYS = ['wss://relay.damus.io','wss://nos.lol','wss://relay.primal.net',
+                'wss://relay.snort.social'];
+const MEMPOOL = 'https://mempool.space/api';
+
+const $ = id => document.getElementById(id);
+const hexToBytes = h => Uint8Array.from(h.match(/../g).map(b=>parseInt(b,16)));
+
+let storePk = null, storeAddr = null;
+if (STORE_NPUB){
+  try{
+    storePk = nip19.decode(STORE_NPUB).data;
+    storeAddr = btc.p2tr(hexToBytes(storePk)).address;
+  }catch(e){ console.error('bad STORE_NPUB', e); }
+}
+if (!storeAddr){
+  $('notcfg').classList.remove('hide');
+  $('loginbtn').disabled = true;
+}
+
+let me = null, paidTxid = null, pollTimer = null;
+
+window.login = async () => {
+  try{
+    if (!window.nostr) throw new Error('No NIP-07 extension found — install Pocket Signer Link or Alby');
+    me = await window.nostr.getPublicKey();
+    $('whoami').textContent = nip19.npubEncode(me);
+    $('s1').classList.add('done');
+    $('s2').classList.add('active');
+    $('paybtn').disabled = false;
+  }catch(e){ alert(e.message || e); }
+};
+
+function shippingOk(){
+  return ['f-name','f-addr1','f-city','f-zip','f-country'].every(id => $(id).value.trim());
+}
+
+window.showPay = async () => {
+  if (!shippingOk()) return alert('Fill in your shipping details first (step 2)');
+  $('paybox').classList.remove('hide');
+  $('payaddr').textContent = storeAddr;
+  await QRCode.toCanvas($('payqr'), `bitcoin:${storeAddr}?amount=${(DEPOSIT_SATS/1e8).toFixed(8)}`,
+                        {width:200, margin:1});
+  $('s3').classList.add('active');
+  // Watch the address for an incoming tx >= deposit that we haven't seen.
+  const seen = new Set(
+    (await fetch(`${MEMPOOL}/address/${storeAddr}/txs`).then(r=>r.json()).catch(()=>[]))
+      .map(t=>t.txid));
+  pollTimer = setInterval(async () => {
+    try{
+      const txs = await fetch(`${MEMPOOL}/address/${storeAddr}/txs`).then(r=>r.json());
+      for (const t of txs){
+        if (seen.has(t.txid)) continue;
+        const paid = t.vout.filter(o=>o.scriptpubkey_address===storeAddr)
+                          .reduce((s,o)=>s+o.value,0);
+        if (paid >= DEPOSIT_SATS){
+          paidTxid = t.txid;
+          clearInterval(pollTimer);
+          $('paystat').innerHTML = `<span class="ok">Payment seen</span> — <span class="mono">${t.txid.slice(0,16)}…</span>`;
+          $('s3').classList.add('done');
+          $('orderbtn').disabled = false;
+          $('s4').classList.add('active');
+          return;
+        }
+      }
+    }catch(e){}
+  }, 15000);
+  $('paystat').textContent = 'Watching the mempool for your deposit…';
+};
+
+window.copyAddr = btn => navigator.clipboard.writeText(storeAddr)
+  .then(()=>{ btn.textContent='Copied'; setTimeout(()=>btn.textContent='Copy address',1200); });
+
+window.submitOrder = async () => {
+  try{
+    if (!me) throw new Error('login first');
+    if (!paidTxid) throw new Error('deposit not detected yet');
+    const order = {
+      product: 'pocket-signer', deposit_sats: DEPOSIT_SATS, txid: paidTxid,
+      ship: {
+        name: $('f-name').value.trim(), addr1: $('f-addr1').value.trim(),
+        addr2: $('f-addr2').value.trim(), city: $('f-city').value.trim(),
+        state: $('f-state').value.trim(), zip: $('f-zip').value.trim(),
+        country: $('f-country').value.trim(), contact: $('f-email').value.trim(),
+      },
+      ts: Math.floor(Date.now()/1000),
+    };
+    // NIP-44 encrypt to the store via the extension (NIP-07 nip44.encrypt),
+    // fallback to nip04 if the extension doesn't do 44 yet.
+    let cipher, kind = 4;
+    if (window.nostr.nip44) cipher = await window.nostr.nip44.encrypt(storePk, JSON.stringify(order));
+    else if (window.nostr.nip04) cipher = await window.nostr.nip04.encrypt(storePk, JSON.stringify(order));
+    else throw new Error('extension supports neither nip44 nor nip04 encryption');
+    const tpl = {kind, created_at: order.ts, content: cipher,
+                 tags: [['p', storePk], ['t', 'pocket-signer-preorder']]};
+    const ev = await window.nostr.signEvent(tpl);
+    let oks = 0, done = 0;
+    await new Promise(res => {
+      for (const url of RELAYS){
+        let ws; try{ ws = new WebSocket(url); }catch(e){ if(++done>=RELAYS.length) res(); continue; }
+        ws.onopen = () => ws.send(JSON.stringify(['EVENT', ev]));
+        ws.onmessage = m => { try{ const d = JSON.parse(m.data);
+          if (d[0]==='OK'){ if (d[2]) oks++; ws.close(); if(++done>=RELAYS.length) res(); } }catch(e){} };
+        ws.onerror = () => { if(++done>=RELAYS.length) res(); };
+      }
+      setTimeout(res, 8000);
+    });
+    if (!oks) throw new Error('no relay accepted the order event — try again');
+    $('s4').classList.add('done');
+    $('orderstat').innerHTML = `<span class="ok">Order placed.</span> Receipt event
+      <span class="mono">${ev.id.slice(0,16)}…</span> — save this id. See you in November.`;
+    $('orderbtn').disabled = true;
+  }catch(e){ $('orderstat').innerHTML = `<span class="err">${e.message || e}</span>`; }
+};
+</script>
+</body>
+</html>

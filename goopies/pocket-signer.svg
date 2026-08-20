@@ -2,34 +2,61 @@
 <style>
 @keyframes wobble{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
 @keyframes blink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.1)}}
-@keyframes tap{0%,60%,100%{transform:translateY(0)}70%{transform:translateY(5px)}80%{transform:translateY(0)}}
-@keyframes glow{0%,100%{opacity:.35}50%{opacity:.9}}
+@keyframes tap{0%,60%,100%{transform:translateY(0)}70%{transform:translateY(6px)}80%{transform:translateY(0)}}
+@keyframes glow{0%,100%{opacity:.3}50%{opacity:1}}
 .dev{animation:wobble 3.4s ease-in-out infinite;transform-origin:100px 120px}
 .eye{animation:blink 3.7s infinite;transform-origin:center}
 .arm{animation:tap 2.4s ease-in-out infinite;transform-origin:52px 118px}
 .led{animation:glow 2s ease-in-out infinite}
 </style>
 <defs>
-<linearGradient id="b" x1="0" y1="0" x2="0" y2="1">
-<stop offset="0" stop-color="#3a3a40"/><stop offset="1" stop-color="#1c1c1e"/>
+<linearGradient id="bodym" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#5a5a63"/><stop offset=".3" stop-color="#38383f"/>
+<stop offset=".75" stop-color="#232327"/><stop offset="1" stop-color="#141416"/>
 </linearGradient>
-<linearGradient id="s" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0" stop-color="#2bd9a4"/><stop offset="1" stop-color="#0fa87a"/>
+<linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#8b8b95"/><stop offset=".5" stop-color="#3c3c44" stop-opacity="0"/><stop offset="1" stop-color="#000"/>
+</linearGradient>
+<radialGradient id="scr" cx=".35" cy=".22" r="1.15">
+<stop offset="0" stop-color="#63f0c0"/><stop offset=".5" stop-color="#1fc491"/><stop offset="1" stop-color="#077a55"/>
+</radialGradient>
+<radialGradient id="gnd2" cx=".5" cy=".5" r=".5">
+<stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="usb" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#9a9aa4"/><stop offset="1" stop-color="#4c4c54"/>
 </linearGradient>
 </defs>
+<ellipse cx="100" cy="186" rx="60" ry="10" fill="url(#gnd2)"/>
 <g class="dev">
-<rect x="52" y="34" width="96" height="150" rx="26" fill="url(#b)"/>
-<rect x="52" y="34" width="96" height="150" rx="26" fill="none" stroke="#57575e" stroke-width="2"/>
-<rect x="88" y="22" width="24" height="14" rx="4" fill="#57575e"/>
-<rect x="94" y="25" width="12" height="8" rx="2" fill="#1c1c1e"/>
-<rect x="64" y="52" width="72" height="96" rx="16" fill="url(#s)"/>
-<g class="eye"><circle cx="86" cy="88" r="8" fill="#083828"/><circle cx="88.5" cy="85.5" r="2.5" fill="#d9fff1"/></g>
-<g class="eye"><circle cx="114" cy="88" r="8" fill="#083828"/><circle cx="116.5" cy="85.5" r="2.5" fill="#d9fff1"/></g>
-<path d="M88 114 Q100 124 112 114" stroke="#083828" stroke-width="5" stroke-linecap="round" fill="none"/>
-<circle class="led" cx="100" cy="166" r="5" fill="#2bd9a4"/>
+<rect x="52" y="34" width="96" height="150" rx="26" fill="url(#bodym)"/>
+<rect x="52" y="34" width="96" height="150" rx="26" fill="url(#edge)" opacity=".35"/>
+<rect x="55" y="37" width="90" height="20" rx="14" fill="#fff" opacity=".08"/>
+<rect x="88" y="20" width="24" height="16" rx="5" fill="url(#usb)"/>
+<rect x="94" y="24" width="12" height="8" rx="3" fill="#101012"/>
+<rect x="64" y="52" width="72" height="96" rx="16" fill="url(#scr)"/>
+<rect x="64" y="52" width="72" height="96" rx="16" fill="none" stroke="#000" stroke-width="1.5" opacity=".4"/>
+<ellipse cx="86" cy="62" rx="30" ry="9" fill="#fff" opacity=".35"/>
+<g class="eye">
+<ellipse cx="86" cy="90" rx="9" ry="10" fill="#03301f"/>
+<circle cx="89" cy="86.5" r="3" fill="#e6fff6"/>
+<circle cx="83" cy="93" r="1.4" fill="#e6fff6" opacity=".6"/>
+</g>
+<g class="eye">
+<ellipse cx="114" cy="90" rx="9" ry="10" fill="#03301f"/>
+<circle cx="117" cy="86.5" r="3" fill="#e6fff6"/>
+<circle cx="111" cy="93" r="1.4" fill="#e6fff6" opacity=".6"/>
+</g>
+<path d="M87 116 Q100 128 113 116" stroke="#03301f" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+<ellipse cx="74" cy="108" rx="6" ry="4" fill="#ff8b6b" opacity=".3"/>
+<ellipse cx="126" cy="108" rx="6" ry="4" fill="#ff8b6b" opacity=".3"/>
+<circle class="led" cx="100" cy="166" r="5.5" fill="#2bd9a4"/>
+<circle cx="100" cy="166" r="8.5" fill="none" stroke="#2bd9a4" stroke-width="1" opacity=".3"/>
 </g>
 <g class="arm">
-<path d="M52 118 Q28 126 30 148" stroke="#3a3a40" stroke-width="10" stroke-linecap="round" fill="none"/>
-<circle cx="30" cy="150" r="9" fill="#3a3a40"/>
+<path d="M52 118 Q26 126 29 149" stroke="#2c2c31" stroke-width="11" stroke-linecap="round" fill="none"/>
+<path d="M52 116 Q28 124 31 145" stroke="#4c4c54" stroke-width="3" stroke-linecap="round" fill="none" opacity=".6"/>
+<circle cx="30" cy="151" r="10" fill="#2c2c31"/>
+<circle cx="27" cy="148" r="3.5" fill="#4c4c54"/>
 </g>
 </svg>

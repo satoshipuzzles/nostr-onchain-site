@@ -1,31 +1,57 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
 <style>
-@keyframes squish{0%,100%{transform:scale(1,1) translateY(0)}35%{transform:scale(1.06,.92) translateY(6px)}70%{transform:scale(.96,1.05) translateY(-4px)}}
+@keyframes squish{0%,100%{transform:scale(1,1) translateY(0)}35%{transform:scale(1.05,.93) translateY(5px)}70%{transform:scale(.97,1.04) translateY(-4px)}}
 @keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
-@keyframes bob{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-7px) rotate(8deg)}}
-@keyframes morph{0%,100%{d:path("M100 28 C150 24 172 66 168 104 C164 148 140 174 100 172 C60 174 34 146 32 104 C30 64 50 32 100 28 Z")}50%{d:path("M100 32 C146 26 176 60 170 100 C166 150 134 178 98 174 C58 176 30 150 30 102 C28 60 54 36 100 32 Z")}}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-8px) rotate(9deg)}}
+@keyframes shine{0%,100%{opacity:.85}50%{opacity:.55}}
 .body{animation:squish 3.2s ease-in-out infinite;transform-origin:100px 130px}
-.blob{animation:morph 3.2s ease-in-out infinite}
 .eye{animation:blink 4.1s infinite;transform-origin:center}
-.bolt{animation:bob 2.6s ease-in-out infinite;transform-origin:150px 60px}
+.bolt{animation:bob 2.6s ease-in-out infinite;transform-origin:152px 58px}
+.spec{animation:shine 3.2s ease-in-out infinite}
 </style>
 <defs>
-<linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0" stop-color="#ffb340"/><stop offset="1" stop-color="#f7931a"/>
+<radialGradient id="sk" cx=".36" cy=".26" r="1.05">
+<stop offset="0" stop-color="#ffd489"/><stop offset=".45" stop-color="#f9a03a"/>
+<stop offset=".8" stop-color="#e07f0e"/><stop offset="1" stop-color="#b35f04"/>
+</radialGradient>
+<radialGradient id="ao" cx=".5" cy=".92" r=".65">
+<stop offset="0" stop-color="#7a3f00" stop-opacity=".55"/><stop offset="1" stop-color="#7a3f00" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="rim" x1="0" y1="0" x2="1" y2=".3">
+<stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#c77bff" stop-opacity=".55"/>
 </linearGradient>
-<linearGradient id="p" x1="0" y1="0" x2="0" y2="1">
-<stop offset="0" stop-color="#d357ff"/><stop offset="1" stop-color="#9b2fd6"/>
-</linearGradient>
+<radialGradient id="bp" cx=".35" cy=".2" r="1.1">
+<stop offset="0" stop-color="#eba1ff"/><stop offset=".5" stop-color="#c04cf5"/><stop offset="1" stop-color="#7d1bb5"/>
+</radialGradient>
+<radialGradient id="gnd" cx=".5" cy=".5" r=".5">
+<stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
+</radialGradient>
 </defs>
+<ellipse cx="100" cy="170" rx="58" ry="11" fill="url(#gnd)"/>
 <g class="body">
-<path class="blob" fill="url(#g)" d="M100 28 C150 24 172 66 168 104 C164 148 140 174 100 172 C60 174 34 146 32 104 C30 64 50 32 100 28 Z"/>
-<ellipse cx="100" cy="160" rx="52" ry="8" fill="#000" opacity=".18"/>
-<g class="eye"><circle cx="78" cy="92" r="9" fill="#1a1a1d"/><circle cx="81" cy="89" r="3" fill="#fff"/></g>
-<g class="eye"><circle cx="122" cy="92" r="9" fill="#1a1a1d"/><circle cx="125" cy="89" r="3" fill="#fff"/></g>
-<path d="M84 122 Q100 136 116 122" stroke="#1a1a1d" stroke-width="6" stroke-linecap="round" fill="none"/>
-<text x="100" y="78" font-family="Arial Black,Arial" font-size="30" font-weight="900" text-anchor="middle" fill="#1a1a1d" opacity=".25">&#8383;</text>
+<path fill="url(#sk)" d="M100 28 C150 24 172 66 168 104 C164 148 140 174 100 172 C60 174 34 146 32 104 C30 64 50 32 100 28 Z"/>
+<path fill="url(#ao)" d="M100 28 C150 24 172 66 168 104 C164 148 140 174 100 172 C60 174 34 146 32 104 C30 64 50 32 100 28 Z"/>
+<path fill="url(#rim)" d="M148 46 C162 62 170 82 168 104 C166 130 156 152 138 164 C158 146 164 122 162 100 C160 76 156 60 148 46 Z"/>
+<ellipse class="spec" cx="72" cy="52" rx="26" ry="16" fill="#fff" opacity=".8" transform="rotate(-18 72 52)"/>
+<ellipse cx="60" cy="70" rx="7" ry="4" fill="#fff" opacity=".45" transform="rotate(-20 60 70)"/>
+<g class="eye">
+<ellipse cx="78" cy="94" rx="10" ry="11" fill="#241303"/>
+<circle cx="81.5" cy="90" r="3.6" fill="#fff"/>
+<circle cx="75" cy="97" r="1.6" fill="#fff" opacity=".6"/>
+</g>
+<g class="eye">
+<ellipse cx="122" cy="94" rx="10" ry="11" fill="#241303"/>
+<circle cx="125.5" cy="90" r="3.6" fill="#fff"/>
+<circle cx="119" cy="97" r="1.6" fill="#fff" opacity=".6"/>
+</g>
+<path d="M84 124 Q100 139 116 124" stroke="#241303" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+<path d="M89 129 Q100 136 111 129" stroke="#5c3600" stroke-width="3" stroke-linecap="round" fill="none" opacity=".5"/>
+<ellipse cx="64" cy="116" rx="8" ry="5" fill="#ff6b4a" opacity=".35"/>
+<ellipse cx="136" cy="116" rx="8" ry="5" fill="#ff6b4a" opacity=".35"/>
+<text x="100" y="76" font-family="Arial Black,Arial" font-size="28" font-weight="900" text-anchor="middle" fill="#8a5200" opacity=".4">&#8383;</text>
 </g>
 <g class="bolt">
-<path fill="url(#p)" d="M158 30 L138 66 L152 66 L134 96 L166 58 L152 58 L168 30 Z"/>
+<path fill="url(#bp)" d="M158 28 L136 66 L151 66 L132 98 L168 58 L153 58 L170 28 Z"/>
+<path fill="#fff" opacity=".5" d="M158 28 L149 44 L156 44 L166 30 Z"/>
 </g>
 </svg>

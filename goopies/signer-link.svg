@@ -2,31 +2,58 @@
 <style>
 @keyframes stretch{0%,100%{transform:scale(1,1)}50%{transform:scale(1.05,.94)}}
 @keyframes blink{0%,89%,100%{transform:scaleY(1)}93%{transform:scaleY(.1)}}
-@keyframes plug{0%,100%{transform:translateX(0)}50%{transform:translateX(9px)}}
-@keyframes spark{0%,45%,100%{opacity:0}55%,70%{opacity:1}}
+@keyframes plug{0%,100%{transform:translateX(0)}50%{transform:translateX(10px)}}
+@keyframes spark{0%,45%,100%{opacity:0;transform:scale(.6)}55%,70%{opacity:1;transform:scale(1)}}
 .jelly{animation:stretch 3s ease-in-out infinite;transform-origin:86px 130px}
 .eye{animation:blink 4.6s infinite;transform-origin:center}
 .cable{animation:plug 3s ease-in-out infinite}
-.zap{animation:spark 3s infinite}
+.zap{animation:spark 3s infinite;transform-origin:150px 86px}
 </style>
 <defs>
-<linearGradient id="v" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0" stop-color="#d357ff"/><stop offset="1" stop-color="#8e24c9"/>
+<radialGradient id="vio" cx=".34" cy=".24" r="1.15">
+<stop offset="0" stop-color="#eaaaff"/><stop offset=".4" stop-color="#c95cf7"/>
+<stop offset=".78" stop-color="#9427d8"/><stop offset="1" stop-color="#5f0f96"/>
+</radialGradient>
+<radialGradient id="ao4" cx=".5" cy=".95" r=".7">
+<stop offset="0" stop-color="#3a0561" stop-opacity=".55"/><stop offset="1" stop-color="#3a0561" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="metal" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#9a9aa4"/><stop offset=".5" stop-color="#5c5c66"/><stop offset="1" stop-color="#333338"/>
 </linearGradient>
+<radialGradient id="gnd4" cx=".5" cy=".5" r=".5">
+<stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
+</radialGradient>
 </defs>
+<ellipse cx="90" cy="176" rx="54" ry="9" fill="url(#gnd4)"/>
 <g class="jelly">
-<path fill="url(#v)" d="M86 42 C126 40 146 70 144 104 C142 142 122 166 86 164 C52 166 28 140 28 102 C28 66 48 44 86 42 Z"/>
-<path fill="#8e24c9" d="M138 92 h18 v12 h-18 z" opacity=".9"/>
-<ellipse cx="86" cy="172" rx="46" ry="7" fill="#000" opacity=".18"/>
-<g class="eye"><circle cx="66" cy="94" r="8" fill="#2d0b45"/><circle cx="68.5" cy="91.5" r="2.5" fill="#fff"/></g>
-<g class="eye"><circle cx="104" cy="94" r="8" fill="#2d0b45"/><circle cx="106.5" cy="91.5" r="2.5" fill="#fff"/></g>
-<path d="M70 122 Q86 134 102 122" stroke="#2d0b45" stroke-width="5" stroke-linecap="round" fill="none"/>
+<path fill="url(#vio)" d="M86 42 C126 40 146 70 144 104 C142 142 122 166 86 164 C52 166 28 140 28 102 C28 66 48 44 86 42 Z"/>
+<path fill="url(#ao4)" d="M86 42 C126 40 146 70 144 104 C142 142 122 166 86 164 C52 166 28 140 28 102 C28 66 48 44 86 42 Z"/>
+<ellipse cx="62" cy="64" rx="20" ry="12" fill="#fff" opacity=".7" transform="rotate(-16 62 64)"/>
+<ellipse cx="50" cy="80" rx="5" ry="3" fill="#fff" opacity=".4" transform="rotate(-20 50 80)"/>
+<path d="M132 70 A56 56 0 0 1 142 108" stroke="#f0c8ff" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".45"/>
+<path fill="#7d1bb5" d="M138 92 h20 v14 h-20 z"/>
+<path fill="#9a3ad1" d="M138 92 h20 v4 h-20 z"/>
+<g class="eye">
+<ellipse cx="66" cy="94" rx="9" ry="10" fill="#28063f"/>
+<circle cx="69" cy="90.5" r="3.2" fill="#fff"/>
+<circle cx="63" cy="97" r="1.5" fill="#fff" opacity=".6"/>
+</g>
+<g class="eye">
+<ellipse cx="104" cy="94" rx="9" ry="10" fill="#28063f"/>
+<circle cx="107" cy="90.5" r="3.2" fill="#fff"/>
+<circle cx="101" cy="97" r="1.5" fill="#fff" opacity=".6"/>
+</g>
+<path d="M70 122 Q86 136 102 122" stroke="#28063f" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+<ellipse cx="52" cy="112" rx="7" ry="4.5" fill="#ff7bd5" opacity=".4"/>
+<ellipse cx="118" cy="112" rx="7" ry="4.5" fill="#ff7bd5" opacity=".4"/>
 </g>
 <g class="cable">
-<rect x="156" y="88" width="20" height="20" rx="5" fill="#3a3a40"/>
-<rect x="176" y="93" width="14" height="10" rx="3" fill="#57575e"/>
+<rect x="158" y="88" width="22" height="22" rx="6" fill="url(#metal)"/>
+<rect x="160" y="90" width="18" height="6" rx="3" fill="#fff" opacity=".25"/>
+<rect x="180" y="93" width="14" height="12" rx="4" fill="#333338"/>
 </g>
 <g class="zap">
-<path d="M150 74 l-6 10 h6 l-8 12 12-14 h-6 l7-8 Z" fill="#ffd54a"/>
+<path d="M152 70 l-7 12 h7 l-9 14 14-16 h-7 l8-10 Z" fill="#ffd54a"/>
+<path d="M152 70 l-4 7 h4 l3-4 Z" fill="#fff" opacity=".7"/>
 </g>
 </svg>
