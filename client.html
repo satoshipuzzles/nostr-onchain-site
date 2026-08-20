@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nostr Onchain Client — Nostr Onchain</title>
+<meta name="description" content="The Nostr Onchain web client — dual signer for Nostr events and Bitcoin taproot transactions, social multisig from npubs, OP_RETURN-linked notes.">
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" type="image/png" href="/icon-192.png">
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a href="/" class="brand"><img src="/logo.png" alt="">Nostr Onchain</a>
+  <nav><a href="/">← All products</a><a href="https://github.com/satoshipuzzles/nostr-onchain-signer">GitHub</a></nav>
+</header>
+
+<div class="phead">
+  <span class="tag">Web client</span>
+  <h1>Nostr Onchain Client</h1>
+  <p>The flagship web client — a dual-purpose signer for Bitcoin on-chain
+  transactions and Nostr events. Derive taproot addresses from any set of npubs,
+  build social multisig wallets from your follow list, and link on-chain payments
+  to Nostr notes with OP_RETURN proofs.</p>
+  <div class="btns">
+    <a class="btn" href="https://nostr-onchain-client.vercel.app">Open the client</a>
+    <a class="btn alt" href="https://github.com/satoshipuzzles/nostr-onchain-signer">Source</a>
+  </div>
+</div>
+
+<section>
+  <h3>Features</h3>
+  <div class="feat">
+    <div><b>Dual signer</b>NIP-07 for Nostr events plus taproot key-path and
+    script-path spending for Bitcoin.</div>
+    <div><b>Social multisig</b>m-of-n taproot wallets built from npubs
+    (BIP-342 Tapscript). Participants don't need to opt in — their npub IS a
+    valid taproot key.</div>
+    <div><b>Key groups from follows</b>Pull co-signers straight from your
+    following list or custom groups.</div>
+    <div><b>OP_RETURN notes</b>Embed a Nostr event ID in a Bitcoin transaction —
+    a cryptographic link between payment and message, always under 80 bytes.</div>
+    <div><b>Atomic send + note</b>Sign a note and its linked transaction in one
+    action, with verifiable on-chain proof.</div>
+    <div><b>Block explorer</b>Browse OP_RETURN-linked notes on-chain.</div>
+  </div>
+</section>
+
+<section>
+  <h3>How to use</h3>
+  <ol class="how">
+    <li>Open <a href="https://nostr-onchain-client.vercel.app" style="color:var(--txt)">nostr-onchain-client.vercel.app</a>.</li>
+    <li>Log in with your Nostr key (NIP-07 extension recommended).</li>
+    <li>Derive a taproot address from your npub — or build a multisig from friends' npubs.</li>
+    <li>Send, attach an OP_RETURN note if you want the payment linked to a message,
+    and sign — with your extension or on the <a href="/pocket-signer" style="color:var(--txt)">Pocket Signer</a>.</li>
+  </ol>
+</section>
+
+<section>
+  <h3>FAQ</h3>
+  <details><summary>How is this different from nostrtx?</summary>
+  <p>nostrtx is the lean transaction builder — PSBTs, fees, coin control. The
+  client is the full experience: social multisig, OP_RETURN notes, and the
+  on-chain note explorer. They share the same key model and work together.</p></details>
+  <details><summary>Do my co-signers need to install anything?</summary>
+  <p>Not to receive into a multisig — any npub is a valid taproot key. To
+  <em>spend</em>, each signer signs the shared PSBT with their own key.</p></details>
+</section>
+
+<footer>
+  <span>Nostr Onchain — don't trust, verify.</span>
+  <span><a href="/">← all products</a></span>
+</footer>
+</div>
+</body>
+</html>

@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Nostr Onchain — self-custody signing for Nostr and Bitcoin</title>
 <meta name="description" content="Hardware and software for sovereign signing: a pocket hardware signer, NIP-07 extension, NIP-46 bridge, Bitcoin transactions for Nostr keys, and more. No custodians, no accounts.">
-<link rel="stylesheet" href="style.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔏</text></svg>">
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" type="image/png" href="/icon-192.png">
 </head>
 <body>
 <div class="wrap">
 <header>
-  <a href="/">🔏 Nostr Onchain</a>
+  <a href="/" class="brand"><img src="/logo.png" alt="">Nostr Onchain</a>
   <nav><a href="https://github.com/satoshipuzzles">GitHub</a></nav>
 </header>
 
@@ -23,35 +23,42 @@
 </div>
 
 <div class="grid">
-  <a class="card" href="pocket-signer.html">
+  <a class="card" href="/client">
+    <div class="thumb"><img src="/logo.png" alt="" style="width:76px;height:76px;border-radius:16px"></div>
+    <h2>Nostr Onchain Client</h2>
+    <span class="tag">Web client</span>
+    <p>The flagship client — dual Nostr + Bitcoin signer, social multisig from
+    npubs, and OP_RETURN-linked notes.</p>
+  </a>
+  <a class="card" href="/pocket-signer">
     <div class="thumb">📟</div>
     <h2>Pocket Signer</h2>
     <span class="tag">Hardware</span>
     <p>A USB-C hardware signer with a touch screen. Real BIP-340 signatures on-device,
     tap to approve every event and every transaction.</p>
   </a>
-  <a class="card" href="nostrtx.html">
+  <a class="card" href="/nostrtx">
     <div class="thumb">₿</div>
     <h2>nostrtx</h2>
     <span class="tag">Web app</span>
     <p>Bitcoin transactions for Nostr keys. Build taproot PSBTs, collect multisig
     signatures, broadcast — entirely client-side.</p>
   </a>
-  <a class="card" href="signer-link.html">
+  <a class="card" href="/signer-link">
     <div class="thumb">🧩</div>
     <h2>Signer Link</h2>
     <span class="tag">Browser extension</span>
     <p>NIP-07 in any Nostr web client, backed by the Pocket Signer. Plugged in = you
     can sign. Unplugged = you can't.</p>
   </a>
-  <a class="card" href="bridge.html">
+  <a class="card" href="/bridge">
     <div class="thumb">🌉</div>
     <h2>Bunker Bridge</h2>
     <span class="tag">Device feature</span>
     <p>NIP-46 remote signing from your phone or any bunker-aware client, with every
     request approved on the device screen.</p>
   </a>
-  <a class="card" href="nostronchain.html">
+  <a class="card" href="/nostronchain">
     <div class="thumb">🔗</div>
     <h2>NostronChain</h2>
     <span class="tag">Web app</span>

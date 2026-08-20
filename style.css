@@ -48,3 +48,5 @@ details p{color:var(--d2);font-size:14px;margin-top:10px}
 footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--line);color:var(--d3);
   font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 footer a{color:var(--d2);text-decoration:none}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{width:30px;height:30px;border-radius:8px}
