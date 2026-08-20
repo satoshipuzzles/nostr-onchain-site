@@ -1,0 +1,82 @@
+# Reserved NIP-05 names for user@nostronchain.com.
+# Lines starting with # are comments; blank lines ignored.
+# Names are lowercased before comparison.
+# Add one name per line. Keep the list short and defensible.
+
+# Operator identities
+admin
+root
+support
+help
+info
+contact
+abuse
+security
+noc
+sysop
+ops
+webmaster
+hostmaster
+postmaster
+mail
+
+# Brand / product terms we never want a squatter to hold
+nostronchain
+nostrtx
+pocket
+pocketsigner
+signer
+signerlink
+bridge
+nostr
+onchain
+onchainapp
+firmware
+device
+store
+shop
+preorder
+order
+client
+extension
+official
+verified
+
+# Bitcoin / Nostr founder-ish names
+satoshi
+nakamoto
+finney
+hal
+adam
+back
+jack
+dorsey
+jb55
+fiatjaf
+
+# Reserved for future use / support flows
+me
+you
+we
+us
+they
+anon
+anonymous
+nobody
+somebody
+null
+undefined
+system
+sys
+
+# Prefix / suffix generic-nouns worth holding
+account
+user
+account1
+test
+demo
+staging
+prod
+example
+sample
+default

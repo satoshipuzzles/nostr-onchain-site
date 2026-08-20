@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NIP-05 Identifier — Nostr Onchain</title>
+<meta name="description" content="Claim you@nostronchain.com as your NIP-05 verified identifier. 21,000 sats on-chain, one-time, yours forever.">
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" type="image/png" href="/icon-192.png">
+<style>
+.step{display:flex;gap:14px;align-items:flex-start;background:var(--c1);border:1px solid var(--line);
+  border-radius:16px;padding:18px;margin-bottom:12px}
+.step.done{border-color:#2b6e4f}
+.step .n{width:30px;height:30px;border-radius:50%;background:var(--c2);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex:none}
+.step.done .n{background:#0e3a20;border-color:#2b6e4f;color:#30d158}
+.step.active{border-color:#4a4a52}
+.step h4{font-size:15.5px;margin-bottom:4px}
+.step p{color:var(--d2);font-size:13.5px}
+.step .body{flex:1;min-width:0}
+.namebox{display:flex;gap:8px;margin-top:10px;align-items:stretch}
+.namebox input{flex:1;background:#000;color:#fff;border:1px solid var(--line);
+  border-radius:10px;padding:11px 12px;font-size:15px;font-family:ui-monospace,Menlo,monospace}
+.namebox .suffix{display:flex;align-items:center;padding:0 12px;background:#000;
+  border:1px solid var(--line);border-radius:10px;color:var(--d2);
+  font-family:ui-monospace,Menlo,monospace;font-size:13.5px;white-space:nowrap}
+.avail{margin-top:8px;font-size:13.5px;min-height:18px}
+.avail.ok{color:#30d158}.avail.err{color:#ff453a}.avail.pending{color:var(--d2)}
+.paybox{background:#000;border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:12px;text-align:center}
+.paybox .addr{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;word-break:break-all;color:var(--d1);margin-top:10px}
+.paybox img,.paybox canvas{border-radius:10px;background:#fff;padding:8px}
+.price{display:flex;align-items:baseline;gap:10px;margin:14px 0 4px}
+.price .big{font-size:38px;font-weight:800;letter-spacing:-.02em}
+.price .sub{color:var(--d2);font-size:14px}
+.badge{display:inline-block;background:#3b2a0a;color:#ff9f0a;border-radius:999px;padding:5px 12px;
+  font-size:12px;font-weight:600;letter-spacing:.03em}
+.ok{color:#30d158}.err{color:#ff453a}
+.mono{font-family:ui-monospace,Menlo,monospace}
+.notcfg{background:#3b2a0a;border:1px solid #6b4a10;border-radius:14px;padding:14px;color:#ffb340;font-size:13.5px}
+.success{background:#0e3a20;border:1px solid #2b6e4f;border-radius:14px;padding:18px;color:#a4e8b8;
+  margin-top:14px;font-size:14.5px}
+.success .id{display:block;margin-top:8px;font-family:ui-monospace,Menlo,monospace;font-size:15px;color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a href="https://nostronchain.com/" class="brand"><img src="/logo.png" alt="">Nostr Onchain</a>
+  <nav><a href="https://nostronchain.com/">← All products</a><a href="/pocket-signer">Pocket Signer</a></nav>
+</header>
+
+<div class="phead pgrid">
+<div>
+  <span class="badge">21,000 sats · one-time · yours forever</span>
+  <h1>Claim <span class="mono" style="font-size:.72em;color:var(--d1)">you@nostronchain.com</span></h1>
+  <p>A NIP-05 verified identifier under <span class="mono">nostronchain.com</span>. Pay
+  once on-chain, and any Nostr client will resolve your name to your public key
+  from <span class="mono">/.well-known/nostr.json</span>. No account, no email,
+  no database that can lose you.</p>
+  <div class="price">
+    <span class="big" id="p-sats">21,000 sats</span>
+    <span class="sub">one-time · non-refundable · non-transferable</span>
+  </div>
+  <p class="sub" style="color:var(--d3);font-size:12.5px">Payment goes to the store's
+  taproot address (same address the Pocket Signer preorder uses). We correlate
+  your payment to your name via the transaction id in a signed claim event.</p>
+</div>
+<div class="pmascot"><img src="/goopies/pocket-signer.svg" alt="" style="width:150px;height:150px"></div>
+</div>
+
+<div id="notcfg" class="notcfg hide">Registry not fully configured yet — the
+operator must set <span class="mono">STORE_NPUB</span> and attach a Vercel KV
+database before names can be provisioned. Availability checks may fail.</div>
+
+<section id="flow">
+  <h3>Claim your identifier</h3>
+
+  <div class="step active" id="s1">
+    <div class="n">1</div>
+    <div class="body">
+      <h4>Pick a name</h4>
+      <p>3–32 characters. Letters, digits, hyphen, underscore. Must start
+      alphanumeric. Reserved names (<span class="mono">admin</span>,
+      <span class="mono">satoshi</span>, product names, etc.) can't be claimed.</p>
+      <div class="namebox">
+        <input id="f-name" placeholder="alice" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <span class="suffix">@nostronchain.com</span>
+      </div>
+      <div id="avail" class="avail pending"></div>
+    </div>
+  </div>
+
+  <div class="step" id="s2">
+    <div class="n">2</div>
+    <div class="body">
+      <h4>Login with your Nostr key</h4>
+      <p>Your npub is bound to the name. One name per key — pick carefully. Losing
+      access to your key means losing the identifier; there is no recovery.</p>
+      <button id="loginbtn" onclick="login()" style="margin-top:10px" disabled>Login with Nostr</button>
+      <div id="whoami" class="mono" style="font-size:12px;margin-top:8px;color:var(--d2)"></div>
+    </div>
+  </div>
+
+  <div class="step" id="s3">
+    <div class="n">3</div>
+    <div class="body">
+      <h4>Pay 21,000 sats on-chain</h4>
+      <p>Send from any wallet. We watch <a href="https://mempool.space" style="color:var(--txt)">mempool.space</a>
+      for your payment and provision the moment it confirms (1 block, ~10 min).</p>
+      <div class="paybox hide" id="paybox">
+        <canvas id="payqr"></canvas>
+        <div class="addr" id="payaddr"></div>
+        <button class="alt" style="margin-top:10px" onclick="copyAddr(this)">Copy address</button>
+        <div id="paystat" style="margin-top:10px;font-size:13.5px;color:var(--d2)">Waiting for payment…</div>
+      </div>
+      <button id="paybtn" onclick="showPay()" style="margin-top:10px" disabled>Show payment address</button>
+    </div>
+  </div>
+
+  <div class="step" id="s4">
+    <div class="n">4</div>
+    <div class="body">
+      <h4>Sign the claim &amp; provision</h4>
+      <p>After the block confirms, you sign a claim event tying your pubkey to
+      the name and the payment txid. That event is what our server verifies
+      before adding you to <span class="mono">/.well-known/nostr.json</span>.</p>
+      <button id="claimbtn" onclick="submitClaim()" disabled style="margin-top:10px">Sign &amp; submit claim</button>
+      <div id="claimstat" style="margin-top:10px;font-size:13.5px"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h3>FAQ</h3>
+  <details><summary>Why 21,000 sats?</summary>
+  <p>It's a meme, and it's enough friction to deter squatters without being
+  meaningful money for anyone real. One-time — no annual renewal, no invoice
+  to lose.</p></details>
+  <details><summary>What if I lose my Nostr key?</summary>
+  <p>You lose the identifier. There is no recovery, no operator override, no
+  reset. Guard your key.</p></details>
+  <details><summary>Can I transfer my name to someone else?</summary>
+  <p>No. The name is bound to your public key at purchase time and cannot
+  be moved. If you want to hand off, sell your key.</p></details>
+  <details><summary>Can I get a refund?</summary>
+  <p>Not once the name is provisioned. If the payment confirms but the claim
+  step fails (bug, disconnect), your txid can still be used later — the
+  server won't accept a different name on the same txid, so save it.</p></details>
+  <details><summary>Where's the registry code?</summary>
+  <p>Under <span class="mono">api/nip05/</span> in
+  <a href="https://github.com/satoshipuzzles/nostr-onchain-site" style="color:var(--txt)">this
+  repo</a>. Public snapshot at <span class="mono">/data/nip05-snapshot.json</span>.</p></details>
+</section>
+
+<footer>
+  <span>Nostr Onchain — signed by you, verified by everyone.</span>
+  <span><a href="https://nostronchain.com/">← all products</a></span>
+</footer>
+</div>
+
+<script type="module">
+import * as btc from 'https://esm.sh/@scure/btc-signer@1.4.0';
+import QRCode from 'https://esm.sh/qrcode@1.5.4';
+import { nip19 } from 'https://esm.sh/nostr-tools@2.10.4';
+
+// STORE_NPUB is the same key /store uses — derives the shared taproot
+// address that receives NIP-05 registration payments.
+const STORE_NPUB = 'npub1qlnzmtgpl6s8pfa756f8g5dd7dpc2egx2zmfzxwng26nkwywugfq420t4n';
+const PRICE_SATS = 21000;
+const MEMPOOL = 'https://mempool.space/api';
+const CLAIM_KIND = 27050;
+
+const $ = (id) => document.getElementById(id);
+const hexToBytes = (h) => Uint8Array.from(h.match(/../g).map((b) => parseInt(b, 16)));
+
+let storePk = null;
+let storeAddr = null;
+try {
+  storePk = nip19.decode(STORE_NPUB).data;
+  storeAddr = btc.p2tr(hexToBytes(storePk)).address;
+} catch (e) { console.error('bad STORE_NPUB', e); }
+if (!storeAddr) $('notcfg').classList.remove('hide');
+
+let me = null;              // buyer's hex pubkey once logged in
+let chosenName = null;      // last name confirmed available
+let payTxid = null;         // txid seen on-chain, >= PRICE_SATS to storeAddr
+let pollTimer = null;
+let checkTimer = null;
+
+// -- Step 1: name search ---------------------------------------------------
+$('f-name').addEventListener('input', () => {
+  chosenName = null;
+  $('loginbtn').disabled = true;
+  $('s2').classList.remove('active');
+  clearTimeout(checkTimer);
+  const raw = $('f-name').value.trim().toLowerCase();
+  if (!raw) { setAvail('', ''); return; }
+  setAvail('pending', 'checking…');
+  checkTimer = setTimeout(async () => {
+    try {
+      const r = await fetch(`/api/nip05/check?name=${encodeURIComponent(raw)}`);
+      const j = await r.json();
+      if (j.available) {
+        chosenName = j.name;
+        setAvail('ok', `${j.name}@nostronchain.com available — ${(j.price_sats || PRICE_SATS).toLocaleString()} sats`);
+        $('s1').classList.add('done');
+        $('s2').classList.add('active');
+        $('loginbtn').disabled = false;
+      } else {
+        setAvail('err', j.reason || 'unavailable');
+        $('s1').classList.remove('done');
+      }
+    } catch (e) {
+      setAvail('err', 'lookup failed — try again');
+    }
+  }, 350);
+});
+
+function setAvail(cls, text) {
+  const el = $('avail');
+  el.className = 'avail ' + cls;
+  el.textContent = text;
+}
+
+// -- Step 2: login ---------------------------------------------------------
+window.login = async () => {
+  try {
+    if (!window.nostr) throw new Error('No NIP-07 extension found — install Pocket Signer Link or Alby');
+    me = await window.nostr.getPublicKey();
+    $('whoami').textContent = nip19.npubEncode(me);
+    $('s2').classList.add('done');
+    $('s3').classList.add('active');
+    $('paybtn').disabled = false;
+  } catch (e) {
+    alert(e.message || e);
+  }
+};
+
+// -- Step 3: show payment + watch mempool ----------------------------------
+window.showPay = async () => {
+  if (!chosenName) return alert('pick a name first (step 1)');
+  if (!me) return alert('login first (step 2)');
+  $('paybox').classList.remove('hide');
+  $('payaddr').textContent = storeAddr;
+  await QRCode.toCanvas($('payqr'),
+    `bitcoin:${storeAddr}?amount=${(PRICE_SATS / 1e8).toFixed(8)}&label=${encodeURIComponent('nostronchain NIP-05 ' + chosenName)}`,
+    { width: 200, margin: 1 });
+  $('paystat').textContent = 'Watching for your payment…';
+
+  // Seed with existing txs so we only react to NEW payments after the QR.
+  const seed = await fetch(`${MEMPOOL}/address/${storeAddr}/txs`).then((r) => r.json()).catch(() => []);
+  const seen = new Set(seed.map((t) => t.txid));
+
+  pollTimer = setInterval(async () => {
+    try {
+      const txs = await fetch(`${MEMPOOL}/address/${storeAddr}/txs`).then((r) => r.json());
+      for (const t of txs) {
+        if (seen.has(t.txid)) continue;
+        seen.add(t.txid);
+        const paid = t.vout
+          .filter((o) => o.scriptpubkey_address === storeAddr)
+          .reduce((s, o) => s + o.value, 0);
+        if (paid < PRICE_SATS) continue;
+        payTxid = t.txid;
+        clearInterval(pollTimer);
+        const conf = t.status && t.status.confirmed;
+        $('paystat').innerHTML = conf
+          ? `<span class="ok">Payment confirmed</span> — <span class="mono">${t.txid.slice(0, 16)}…</span>`
+          : `<span class="ok">Payment seen (unconfirmed)</span> — <span class="mono">${t.txid.slice(0, 16)}…</span> — waiting for a block, ~10 min`;
+        $('s3').classList.add('done');
+        $('s4').classList.add('active');
+        $('claimbtn').disabled = false;
+        return;
+      }
+    } catch (e) { /* transient; try again */ }
+  }, 15000);
+};
+
+window.copyAddr = (btn) => navigator.clipboard.writeText(storeAddr)
+  .then(() => { btn.textContent = 'Copied'; setTimeout(() => (btn.textContent = 'Copy address'), 1200); });
+
+// -- Step 4: sign claim + POST /api/nip05/claim ----------------------------
+window.submitClaim = async () => {
+  const btn = $('claimbtn');
+  btn.disabled = true;
+  $('claimstat').textContent = '';
+  try {
+    if (!me) throw new Error('login first');
+    if (!chosenName) throw new Error('pick a name first');
+    if (!payTxid) throw new Error('payment not detected yet');
+
+    const claim = {
+      name: chosenName,
+      txid: payTxid,
+      price_sats: PRICE_SATS,
+      addr: storeAddr,
+    };
+    const tpl = {
+      kind: CLAIM_KIND,
+      created_at: Math.floor(Date.now() / 1000),
+      tags: [['d', chosenName], ['t', 'nip05-claim']],
+      content: JSON.stringify(claim),
+    };
+    const event = await window.nostr.signEvent(tpl);
+
+    const r = await fetch('/api/nip05/claim', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: chosenName, txid: payTxid, event }),
+    });
+    const j = await r.json();
+    if (!r.ok) throw new Error(j.error || `HTTP ${r.status}`);
+
+    $('s4').classList.add('done');
+    $('claimstat').innerHTML = `<div class="success">
+      Provisioned. Your NIP-05 identifier is live:
+      <span class="id">${j.nip05}</span>
+      Verify: <a href="/.well-known/nostr.json?name=${encodeURIComponent(chosenName)}"
+      style="color:var(--txt)" target="_blank">/.well-known/nostr.json?name=${chosenName}</a>
+    </div>`;
+  } catch (e) {
+    btn.disabled = false;
+    $('claimstat').innerHTML = `<span class="err">${e.message || e}</span>`;
+  }
+};
+</script>
+</body>
+</html>

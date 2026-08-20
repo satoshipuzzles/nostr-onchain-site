@@ -1,5 +1,11 @@
 {
   "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/.well-known/nostr.json",
+      "destination": "/api/nip05/well-known"
+    }
+  ],
   "redirects": [
     {
       "source": "/",
@@ -22,6 +28,19 @@
         {"key": "X-Frame-Options", "value": "DENY"},
         {"key": "Referrer-Policy", "value": "no-referrer"}
       ]
+    },
+    {
+      "source": "/.well-known/nostr.json",
+      "headers": [
+        {"key": "Access-Control-Allow-Origin", "value": "*"},
+        {"key": "Cache-Control", "value": "public, max-age=300, s-maxage=60"}
+      ]
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/nip05-snapshot",
+      "schedule": "0 4 * * *"
     }
   ]
 }
