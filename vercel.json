@@ -1,5 +1,19 @@
 {
   "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/",
+      "has": [{"type": "host", "value": "pocketsigner.com"}],
+      "destination": "/pocket-signer",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [{"type": "host", "value": "www.pocketsigner.com"}],
+      "destination": "/pocket-signer",
+      "permanent": false
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
