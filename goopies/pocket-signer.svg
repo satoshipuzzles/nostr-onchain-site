@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+@keyframes wobble{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes blink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.1)}}
+@keyframes tap{0%,60%,100%{transform:translateY(0)}70%{transform:translateY(5px)}80%{transform:translateY(0)}}
+@keyframes glow{0%,100%{opacity:.35}50%{opacity:.9}}
+.dev{animation:wobble 3.4s ease-in-out infinite;transform-origin:100px 120px}
+.eye{animation:blink 3.7s infinite;transform-origin:center}
+.arm{animation:tap 2.4s ease-in-out infinite;transform-origin:52px 118px}
+.led{animation:glow 2s ease-in-out infinite}
+</style>
+<defs>
+<linearGradient id="b" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#3a3a40"/><stop offset="1" stop-color="#1c1c1e"/>
+</linearGradient>
+<linearGradient id="s" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#2bd9a4"/><stop offset="1" stop-color="#0fa87a"/>
+</linearGradient>
+</defs>
+<g class="dev">
+<rect x="52" y="34" width="96" height="150" rx="26" fill="url(#b)"/>
+<rect x="52" y="34" width="96" height="150" rx="26" fill="none" stroke="#57575e" stroke-width="2"/>
+<rect x="88" y="22" width="24" height="14" rx="4" fill="#57575e"/>
+<rect x="94" y="25" width="12" height="8" rx="2" fill="#1c1c1e"/>
+<rect x="64" y="52" width="72" height="96" rx="16" fill="url(#s)"/>
+<g class="eye"><circle cx="86" cy="88" r="8" fill="#083828"/><circle cx="88.5" cy="85.5" r="2.5" fill="#d9fff1"/></g>
+<g class="eye"><circle cx="114" cy="88" r="8" fill="#083828"/><circle cx="116.5" cy="85.5" r="2.5" fill="#d9fff1"/></g>
+<path d="M88 114 Q100 124 112 114" stroke="#083828" stroke-width="5" stroke-linecap="round" fill="none"/>
+<circle class="led" cx="100" cy="166" r="5" fill="#2bd9a4"/>
+</g>
+<g class="arm">
+<path d="M52 118 Q28 126 30 148" stroke="#3a3a40" stroke-width="10" stroke-linecap="round" fill="none"/>
+<circle cx="30" cy="150" r="9" fill="#3a3a40"/>
+</g>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes blink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.1)}}
+@keyframes wave{0%{stroke-dashoffset:60}100%{stroke-dashoffset:0}}
+@keyframes ring{0%{r:8;opacity:.8}100%{r:26;opacity:0}}
+.ghost{animation:floaty 3.4s ease-in-out infinite}
+.eye{animation:blink 4s infinite;transform-origin:center}
+.sig{stroke-dasharray:8 7;animation:wave 1.6s linear infinite}
+.pulse{animation:ring 2.2s ease-out infinite}
+</style>
+<defs>
+<linearGradient id="t" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#6fe3ff"/><stop offset="1" stop-color="#1ba8d4"/>
+</linearGradient>
+</defs>
+<circle class="pulse" cx="100" cy="44" r="8" fill="none" stroke="#6fe3ff" stroke-width="2"/>
+<circle cx="100" cy="44" r="5" fill="#6fe3ff"/>
+<path class="sig" d="M100 52 C100 62 100 66 100 74" stroke="#6fe3ff" stroke-width="3" fill="none" stroke-linecap="round"/>
+<g class="ghost">
+<path fill="url(#t)" d="M100 74 C136 74 152 100 152 128 L152 164 L138 152 L124 166 L110 152 L96 166 L82 152 L68 164 L58 164 L58 128 C58 98 68 74 100 74 Z"/>
+<g class="eye"><circle cx="84" cy="116" r="8" fill="#063648"/><circle cx="86.5" cy="113.5" r="2.5" fill="#fff"/></g>
+<g class="eye"><circle cx="120" cy="116" r="8" fill="#063648"/><circle cx="122.5" cy="113.5" r="2.5" fill="#fff"/></g>
+<path d="M88 140 Q102 150 116 140" stroke="#063648" stroke-width="5" stroke-linecap="round" fill="none"/>
+</g>
+</svg>

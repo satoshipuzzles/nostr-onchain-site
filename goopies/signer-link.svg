@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<style>
+@keyframes stretch{0%,100%{transform:scale(1,1)}50%{transform:scale(1.05,.94)}}
+@keyframes blink{0%,89%,100%{transform:scaleY(1)}93%{transform:scaleY(.1)}}
+@keyframes plug{0%,100%{transform:translateX(0)}50%{transform:translateX(9px)}}
+@keyframes spark{0%,45%,100%{opacity:0}55%,70%{opacity:1}}
+.jelly{animation:stretch 3s ease-in-out infinite;transform-origin:86px 130px}
+.eye{animation:blink 4.6s infinite;transform-origin:center}
+.cable{animation:plug 3s ease-in-out infinite}
+.zap{animation:spark 3s infinite}
+</style>
+<defs>
+<linearGradient id="v" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#d357ff"/><stop offset="1" stop-color="#8e24c9"/>
+</linearGradient>
+</defs>
+<g class="jelly">
+<path fill="url(#v)" d="M86 42 C126 40 146 70 144 104 C142 142 122 166 86 164 C52 166 28 140 28 102 C28 66 48 44 86 42 Z"/>
+<path fill="#8e24c9" d="M138 92 h18 v12 h-18 z" opacity=".9"/>
+<ellipse cx="86" cy="172" rx="46" ry="7" fill="#000" opacity=".18"/>
+<g class="eye"><circle cx="66" cy="94" r="8" fill="#2d0b45"/><circle cx="68.5" cy="91.5" r="2.5" fill="#fff"/></g>
+<g class="eye"><circle cx="104" cy="94" r="8" fill="#2d0b45"/><circle cx="106.5" cy="91.5" r="2.5" fill="#fff"/></g>
+<path d="M70 122 Q86 134 102 122" stroke="#2d0b45" stroke-width="5" stroke-linecap="round" fill="none"/>
+</g>
+<g class="cable">
+<rect x="156" y="88" width="20" height="20" rx="5" fill="#3a3a40"/>
+<rect x="176" y="93" width="14" height="10" rx="3" fill="#57575e"/>
+</g>
+<g class="zap">
+<path d="M150 74 l-6 10 h6 l-8 12 12-14 h-6 l7-8 Z" fill="#ffd54a"/>
+</g>
+</svg>
