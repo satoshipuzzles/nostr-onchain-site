@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pocket Signer — Nostr Onchain</title>
+<meta name="description" content="A USB-C hardware signer for Nostr and Bitcoin. On-device BIP-340 signatures, taproot PSBT review, tap to approve.">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📟</text></svg>">
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a href="/">🔏 Nostr Onchain</a>
+  <nav><a href="https://github.com/satoshipuzzles/pocket-signer-firmware">GitHub</a></nav>
+</header>
+
+<div class="phead">
+  <span class="tag">Hardware</span>
+  <h1>Pocket Signer</h1>
+  <p>A hardware signer that fits on a keychain. Plug it into any computer or phone
+  over USB-C and it appears as a tiny network device — every Nostr event and every
+  Bitcoin transaction is rendered on its screen and signed only when you physically
+  tap approve. Keys never leave the device over the network.</p>
+  <div class="btns">
+    <a class="btn" href="https://github.com/satoshipuzzles/pocket-signer-firmware">Firmware source</a>
+    <a class="btn alt" href="signer-link.html">Get the browser extension</a>
+  </div>
+</div>
+
+<section>
+  <h3>Media</h3>
+  <div class="media">Photos and demo video coming soon.</div>
+</section>
+
+<section>
+  <h3>Features</h3>
+  <div class="feat">
+    <div><b>Real signatures, on-device</b>BIP-340 Schnorr signatures computed on the
+    device with hardware-entropy nonces, self-verified before returning.</div>
+    <div><b>Tap to approve</b>Every event and transaction is shown on screen. Nothing
+    signs without a physical tap.</div>
+    <div><b>Bitcoin PSBT review</b>Taproot PSBT parsing and signing on-device —
+    outputs, amounts, and change shown before you approve.</div>
+    <div><b>USB-C network link</b>No drivers, no pairing. The device serves its own
+    pages at http://10.77.7.1 and rejects requests from foreign web origins.</div>
+    <div><b>Multi-account</b>Up to 8 keypairs. Import via SD card, switch on-screen.</div>
+    <div><b>Air-gap option</b>Sign PSBTs from an SD card with no network link at all.</div>
+  </div>
+</section>
+
+<section>
+  <h3>How to use</h3>
+  <ol class="how">
+    <li>Plug the device into your computer over USB-C.</li>
+    <li>Install the <a href="signer-link.html" style="color:var(--txt)">Signer Link extension</a>,
+    or open <span style="font-family:ui-monospace,Menlo,monospace">http://10.77.7.1</span> directly.</li>
+    <li>Log into any Nostr client via extension — signing requests appear on the device.</li>
+    <li>For Bitcoin: build a PSBT in <a href="nostrtx.html" style="color:var(--txt)">nostrtx</a>,
+    send it to the device, review the outputs on screen, tap to sign.</li>
+  </ol>
+</section>
+
+<section>
+  <h3>FAQ</h3>
+  <details><summary>Can a website steal my keys?</summary>
+  <p>No. Keys never cross the network — only signatures do. The API also rejects
+  requests from arbitrary web origins, so pages you visit can't even read your
+  public key without approval.</p></details>
+  <details><summary>What happens if I lose the device?</summary>
+  <p>Restore from your backup (SD-card export). A device PIN and encrypted key
+  storage are on the roadmap — until then, treat the device like cash.</p></details>
+  <details><summary>Does it work with real funds?</summary>
+  <p>It produces real, valid signatures. As with any young signer, start with
+  testnet or small amounts and verify everything.</p></details>
+</section>
+
+<footer>
+  <span>Nostr Onchain — don't trust, verify.</span>
+  <span><a href="/">← all products</a></span>
+</footer>
+</div>
+</body>
+</html>

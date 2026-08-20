@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bunker Bridge — Nostr Onchain</title>
+<meta name="description" content="NIP-46 remote signing from any bunker-aware client, approved on the Pocket Signer's screen.">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌉</text></svg>">
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a href="/">🔏 Nostr Onchain</a>
+  <nav><a href="https://github.com/satoshipuzzles/pocket-signer-firmware">GitHub</a></nav>
+</header>
+
+<div class="phead">
+  <span class="tag">Device feature</span>
+  <h1>Bunker Bridge</h1>
+  <p>Remote signing without remote trust. The Pocket Signer serves a bridge page
+  that speaks NIP-46 — copy the bunker link into any bunker-aware client (on your
+  phone, another computer, anywhere) and signing requests travel over Nostr relays
+  to the device, where each one still requires a physical tap.</p>
+  <div class="btns">
+    <a class="btn" href="pocket-signer.html">About the device</a>
+    <a class="btn alt" href="https://github.com/satoshipuzzles/pocket-signer-firmware">Source</a>
+  </div>
+</div>
+
+<section>
+  <h3>Features</h3>
+  <div class="feat">
+    <div><b>NIP-46 native</b>Standard bunker:// links — works with clients that
+    support remote signers, no extension needed.</div>
+    <div><b>Sign from your phone</b>The device stays plugged in at home; requests
+    reach it over relays.</div>
+    <div><b>Same consent model</b>Remote or local, nothing signs without the
+    on-device tap. Relay auth (kind 22242) can auto-sign if you enable it.</div>
+    <div><b>PSBT relay</b>Paste a PSBT on the bridge page from any device — review
+    and sign on the hardware.</div>
+  </div>
+</section>
+
+<section>
+  <h3>How to use</h3>
+  <ol class="how">
+    <li>With the device plugged in, open
+    <span style="font-family:ui-monospace,Menlo,monospace">http://10.77.7.1/bridge</span>.</li>
+    <li>Copy the bunker link.</li>
+    <li>Paste it into any NIP-46-aware Nostr client to log in.</li>
+    <li>Approve each signing request on the device screen.</li>
+  </ol>
+</section>
+
+<footer>
+  <span>Nostr Onchain — don't trust, verify.</span>
+  <span><a href="/">← all products</a></span>
+</footer>
+</div>
+</body>
+</html>

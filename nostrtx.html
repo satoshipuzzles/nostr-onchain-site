@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>nostrtx — Nostr Onchain</title>
+<meta name="description" content="Bitcoin transactions for Nostr keys. Client-side taproot PSBTs, multisig, hardware signing, broadcast.">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>₿</text></svg>">
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a href="/">🔏 Nostr Onchain</a>
+  <nav><a href="https://github.com/satoshipuzzles/nostrtx">GitHub</a></nav>
+</header>
+
+<div class="phead">
+  <span class="tag">Web app</span>
+  <h1>nostrtx</h1>
+  <p>Bitcoin transactions for Nostr keys. Paste an npub, get its taproot address,
+  build an unsigned PSBT, sign it on your hardware — never in the browser — and
+  broadcast. Multisig included. Entirely client-side: no backend, no custody,
+  no account.</p>
+  <div class="btns">
+    <a class="btn" href="https://nostrtx.vercel.app">Open nostrtx</a>
+    <a class="btn alt" href="https://github.com/satoshipuzzles/nostrtx">Source</a>
+  </div>
+</div>
+
+<section>
+  <h3>Features</h3>
+  <div class="feat">
+    <div><b>npub → Bitcoin</b>Every Nostr key is a taproot address. Send sats to
+    anyone you follow.</div>
+    <div><b>Unsigned PSBTs only</b>The app never touches a private key. Sign on the
+    Pocket Signer via USB, bridge, or SD card.</div>
+    <div><b>Multisig</b>Build shared taproot wallets with co-signers, collect
+    signatures, finalize, broadcast.</div>
+    <div><b>Fee control</b>Slow / normal / fast presets from the mempool, or enter a
+    custom sat/vB rate — with a live cost preview before you build.</div>
+    <div><b>Coin control</b>Pick exactly which UTXOs to spend.</div>
+    <div><b>Follows built in</b>Your Nostr follow list is the address book.</div>
+  </div>
+</section>
+
+<section>
+  <h3>How to use</h3>
+  <ol class="how">
+    <li>Open <a href="https://nostrtx.vercel.app" style="color:var(--txt)">nostrtx.vercel.app</a>
+    and log in (NIP-07 extension or bunker link).</li>
+    <li>Load your wallet — your npub's taproot address and coins appear.</li>
+    <li>Enter a recipient (npub or Bitcoin address), amount, and fee rate.</li>
+    <li>Build the unsigned PSBT and sign it on your device.</li>
+    <li>Paste the signed transaction back and broadcast.</li>
+  </ol>
+</section>
+
+<section>
+  <h3>FAQ</h3>
+  <details><summary>Where are my keys?</summary>
+  <p>Not here. nostrtx only ever sees public keys and signed transactions. Signing
+  happens on your hardware or in your NIP-07 extension.</p></details>
+  <details><summary>Can I use it without the hardware signer?</summary>
+  <p>Yes — any NIP-07 extension or NIP-46 bunker works for Nostr login, and you can
+  sign PSBTs in wallets like Sparrow by importing the PSBT.</p></details>
+</section>
+
+<footer>
+  <span>Nostr Onchain — don't trust, verify.</span>
+  <span><a href="/">← all products</a></span>
+</footer>
+</div>
+</body>
+</html>

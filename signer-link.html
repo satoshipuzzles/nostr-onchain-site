@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Signer Link — Nostr Onchain</title>
+<meta name="description" content="NIP-07 browser extension backed by the Pocket Signer hardware device.">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
+</head>
+<body>
+<div class="wrap">
+<header>
+  <a href="/">🔏 Nostr Onchain</a>
+  <nav><a href="https://github.com/satoshipuzzles/signer-link-extension">GitHub</a></nav>
+</header>
+
+<div class="phead">
+  <span class="tag">Browser extension</span>
+  <h1>Signer Link</h1>
+  <p>Presents <span style="font-family:ui-monospace,Menlo,monospace">window.nostr</span>
+  (NIP-07) to any Nostr web client and forwards every call to the Pocket Signer over
+  its USB-C link. Plugged in = you can sign. Unplugged = you can't. The simplest
+  security model there is.</p>
+  <div class="btns">
+    <a class="btn" href="https://github.com/satoshipuzzles/signer-link-extension">Get it on GitHub</a>
+    <a class="btn alt" href="pocket-signer.html">About the device</a>
+  </div>
+</div>
+
+<section>
+  <h3>Features</h3>
+  <div class="feat">
+    <div><b>Works everywhere</b>iris.to, snort.social, coracle.social — any client
+    with NIP-07 login.</div>
+    <div><b>Nothing to trust</b>The extension holds no keys. It's a courier between
+    the web page and the device screen.</div>
+    <div><b>Physical consent</b>Every signEvent renders on the device and waits for
+    a SIGN / REJECT tap.</div>
+    <div><b>Multi-account</b>Whichever account is active on the device is the one
+    the extension uses.</div>
+  </div>
+</section>
+
+<section>
+  <h3>Install (Chrome / Brave / Arc)</h3>
+  <ol class="how">
+    <li>Clone or download the <a href="https://github.com/satoshipuzzles/signer-link-extension"
+    style="color:var(--txt)">repository</a>.</li>
+    <li>Open <span style="font-family:ui-monospace,Menlo,monospace">chrome://extensions</span>,
+    enable Developer mode.</li>
+    <li>Load unpacked → select the extension folder.</li>
+    <li>Plug in the Pocket Signer, open a Nostr client, log in via extension.</li>
+  </ol>
+</section>
+
+<footer>
+  <span>Nostr Onchain — don't trust, verify.</span>
+  <span><a href="/">← all products</a></span>
+</footer>
+</div>
+</body>
+</html>
