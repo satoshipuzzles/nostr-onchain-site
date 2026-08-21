@@ -114,6 +114,17 @@ database before names can be provisioned. Availability checks may fail.</div>
         <div id="paystat" style="margin-top:10px;font-size:13.5px;color:var(--d2)">Waiting for payment…</div>
       </div>
       <button id="paybtn" onclick="showPay()" style="margin-top:10px" disabled>Show payment address</button>
+      <div id="already-paid-wrap" class="hide" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
+        <p style="font-size:13px;color:var(--d2)">
+          Already paid on a previous visit? Enter your Bitcoin transaction id
+          below to skip the mempool watch and jump straight to step 4.
+        </p>
+        <div class="namebox" style="margin-top:8px">
+          <input id="f-txid" placeholder="64-hex transaction id" autocomplete="off" autocapitalize="off" spellcheck="false" style="font-family:ui-monospace,Menlo,monospace">
+        </div>
+        <button class="alt" style="margin-top:10px" onclick="useExistingTxid()">Use this txid</button>
+        <div id="txidstat" style="margin-top:8px;font-size:13px;min-height:16px"></div>
+      </div>
     </div>
   </div>
 
@@ -231,8 +242,49 @@ window.login = async () => {
     $('s2').classList.add('done');
     $('s3').classList.add('active');
     $('paybtn').disabled = false;
+    $('already-paid-wrap').classList.remove('hide');
   } catch (e) {
     alert(e.message || e);
+  }
+};
+
+// -- Step 3 recovery: user paid on a previous visit ------------------------
+window.useExistingTxid = async () => {
+  const stat = $('txidstat');
+  stat.className = 'avail pending';
+  stat.textContent = '';
+  try {
+    if (!chosenName) throw new Error('pick a name first (step 1)');
+    if (!me) throw new Error('login first (step 2)');
+    const txid = ($('f-txid').value || '').trim().toLowerCase();
+    if (!/^[a-f0-9]{64}$/.test(txid)) throw new Error('txid must be 64 hex characters');
+
+    stat.textContent = 'looking up transaction on mempool.space…';
+    const tx = await fetch(`${MEMPOOL}/tx/${txid}`).then((r) => (r.ok ? r.json() : null));
+    if (!tx) throw new Error('transaction not found on mempool.space');
+    const paid = (tx.vout || [])
+      .filter((o) => o.scriptpubkey_address === storeAddr)
+      .reduce((s, o) => s + o.value, 0);
+    if (paid < PRICE_SATS) {
+      throw new Error(`this transaction sent ${paid} sats to the store address, need ${PRICE_SATS}`);
+    }
+    const conf = tx.status && tx.status.confirmed;
+
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    payTxid = txid;
+    $('paybox').classList.remove('hide');
+    $('payaddr').textContent = storeAddr;
+    $('paystat').innerHTML = conf
+      ? `<span class="ok">Payment confirmed</span> — <span class="mono">${txid.slice(0, 16)}…</span>`
+      : `<span class="ok">Payment seen (unconfirmed)</span> — <span class="mono">${txid.slice(0, 16)}…</span> — waiting for a block, ~10 min`;
+    $('s3').classList.add('done');
+    $('s4').classList.add('active');
+    $('claimbtn').disabled = false;
+    stat.className = 'avail ok';
+    stat.textContent = 'txid accepted — proceed to step 4';
+  } catch (e) {
+    stat.className = 'avail err';
+    stat.textContent = e.message || String(e);
   }
 };
 
