@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>nostrtx — Nostr Onchain</title>
-<meta name="description" content="Bitcoin transactions for Nostr keys. Client-side taproot PSBTs, multisig, hardware signing, broadcast.">
+<meta name="description" content="Bitcoin transactions for Nostr keys on XBT and BTC. Client-side taproot PSBTs, coin splitting after the chain split, multisig, hardware signing, broadcast.">
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" type="image/png" href="/icon-192.png">
 </head>
@@ -21,8 +21,9 @@
   <h1>nostrtx</h1>
   <p>Bitcoin transactions for Nostr keys. Paste an npub, get its taproot address,
   build an unsigned PSBT, sign it on your hardware — never in the browser — and
-  broadcast. Multisig included. Entirely client-side: no backend, no custody,
-  no account.</p>
+  broadcast. Works on both chains since the split — XBT (BLAKE2b) and BTC — and
+  splits your coins between them. Multisig included. Entirely client-side: no
+  backend, no custody, no account.</p>
   <div class="btns">
     <a class="btn" href="https://nostrtx.com">Open nostrtx</a>
     <a class="btn alt" href="https://github.com/satoshipuzzles/nostrtx">Source</a>
@@ -43,6 +44,14 @@
     <div><b>Fee control</b>Slow / normal / fast presets from the mempool, or enter a
     custom sat/vB rate — with a live cost preview before you build.</div>
     <div><b>Coin control</b>Pick exactly which UTXOs to spend.</div>
+    <div><b>XBT and BTC</b>One switch. Your address is loaded on both chains and every
+    coin is tagged unsplit, XBT only, or BTC only.</div>
+    <div><b>Split coins</b>One tap builds the XBT transaction that separates your coins:
+    signed <code>SIGHASH_UNIFIED</code>, valid on XBT only, never replayable to BTC.
+    After it confirms, spend the BTC side freely.</div>
+    <div><b>Replay-safe by default</b>Every XBT transaction opts in to
+    <code>SIGHASH_UNIFIED</code>; a BTC spend of unsplit coins is refused until you
+    acknowledge it also moves the XBT.</div>
     <div><b>Follows built in</b>Your Nostr follow list is the address book.</div>
   </div>
 </section>
@@ -66,7 +75,18 @@
   happens on your hardware or in your NIP-07 extension.</p></details>
   <details><summary>Can I use it without the hardware signer?</summary>
   <p>Yes — any NIP-07 extension or NIP-46 bunker works for Nostr login, and you can
-  sign PSBTs in wallets like Sparrow by importing the PSBT.</p></details>
+  sign PSBTs in wallets like Sparrow by importing the PSBT. For XBT (replay-safe)
+  transactions the signer has to understand <code>SIGHASH_UNIFIED</code>: the Pocket
+  Signer, Bitcoin Knots 29.4.1+, and Shrike (the Sparrow fork) do.</p></details>
+  <details><summary>What is the chain split, and why split my coins?</summary>
+  <p>Since block 961,632 there are two chains with one shared history: XBT, which runs
+  Bitcoin Knots with BIP-110 data limits and BLAKE2b proof-of-work from block 961,640,
+  and BTC, the SHA-256d chain. Every coin from before the split exists on both, and an
+  ordinary signature is valid on both, so a spend on one chain can be copied to the
+  other. XBT added an opt-in signature type, <code>SIGHASH_UNIFIED</code>, that only
+  verifies on XBT. nostrtx's Split button sends your unsplit coins back to yourself
+  on XBT with that signature; once it confirms, the BTC copies are yours to spend on
+  BTC without touching your XBT.</p></details>
 </section>
 
 <footer>
