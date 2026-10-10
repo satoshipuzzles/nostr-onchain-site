@@ -4,9 +4,44 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pocket Signer — Nostr Onchain</title>
-<meta name="description" content="A USB-C hardware signer for Nostr and Bitcoin. On-device BIP-340 signatures, taproot PSBT review, tap to approve.">
+<meta name="description" content="Free, open-source firmware that turns an off-the-shelf ESP32 touch-screen board into a Nostr and Bitcoin signer. Supported boards and a step-by-step flashing guide.">
 <link rel="stylesheet" href="/style.css">
 <link rel="icon" type="image/png" href="/icon-192.png">
+<style>
+.devs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.dev{background:var(--c1);border:1px solid var(--line);border-radius:18px;padding:20px}
+.dev h4{font-size:17px;letter-spacing:-.01em}
+.dev .chip{display:inline-block;font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;
+  color:var(--d3);border:1px solid var(--line);border-radius:999px;padding:3px 9px;margin:8px 6px 10px 0}
+.dev p{color:var(--d2);font-size:14px}
+.dev ul{list-style:none;padding:0;margin:12px 0 16px;font-size:13.5px;color:var(--d1)}
+.dev li{padding:6px 0;border-top:1px solid var(--line);display:flex;gap:10px}
+.dev li span{color:var(--d3);min-width:84px;flex:none}
+.dev .btn{display:inline-block;padding:10px 16px;font-size:13.5px}
+.note{background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:14px 16px;
+  color:var(--d2);font-size:14px;margin-top:14px}
+.warn{background:#2a1a08;border:1px solid #6b4a10;border-radius:14px;padding:14px 16px;
+  color:#ffcf8a;font-size:14px;margin-top:14px}
+.guide{list-style:none;padding:0;counter-reset:g}
+.guide>li{counter-increment:g;position:relative;padding:0 0 26px 46px}
+.guide>li::before{content:counter(g);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;
+  background:var(--c2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px}
+.guide h4{font-size:16px;margin:3px 0 6px}
+.guide p,.guide li li{color:var(--d1);font-size:14.5px}
+.guide p+p{margin-top:8px}
+.guide ul{padding-left:18px;margin-top:6px}
+.guide ul li{margin-bottom:5px}
+.guide b{color:var(--txt)}
+code,pre{font-family:ui-monospace,Menlo,monospace}
+code{font-size:12.5px;background:var(--c2);border:1px solid var(--line);border-radius:6px;padding:1px 5px;word-break:break-word}
+pre{background:#0b0b0d;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0;
+  font-size:12.5px;color:var(--d1);overflow-x:auto;white-space:pre}
+.tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:10px}
+.tabs>div{background:var(--c1);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
+.tabs>div>b{display:block;margin-bottom:4px}
+a.inl{color:var(--txt)}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -17,66 +52,202 @@
 
 <div class="phead pgrid">
 <div>
-  <span class="tag">Hardware</span>
+  <span class="tag">Free firmware · ESP32</span>
   <h1>Pocket Signer</h1>
-  <p>A hardware signer that fits on a keychain. Plug it into any computer or phone
-  over USB-C and it appears as a tiny network device — every Nostr event and every
-  Bitcoin transaction is rendered on its screen and signed only when you physically
-  tap approve. Keys never leave the device over the network.</p>
+  <p>Free, open-source firmware that turns an off-the-shelf ESP32 touch-screen
+  board into a Nostr and Bitcoin signer. Your keys live on the board. Every
+  Nostr event and every Bitcoin transaction shows up on its screen and is signed
+  only when you tap Approve.</p>
   <div class="btns">
-    <a class="btn" href="/store">Preorder — ships November</a>
+    <a class="btn" href="#devices">Supported boards</a>
+    <a class="btn alt" href="#guide">Flashing guide</a>
     <a class="btn alt" href="https://github.com/satoshipuzzles/pocket-signer-firmware">Firmware source</a>
-    <a class="btn alt" href="https://nostronchain.com/signer-link">Get the browser extension</a>
   </div>
 </div>
 <div class="pmascot"><img src="/goopies/pocket-signer.svg" alt=""></div>
 </div>
 
-<section>
-  <h3>Media</h3>
-  <div class="media">Photos and demo video coming soon.</div>
+<section id="devices">
+  <h3>Boards that run it</h3>
+  <div class="devs">
+    <div class="dev">
+      <h4>Waveshare ESP32-S3 Touch AMOLED 1.8</h4>
+      <span class="chip">ESP32-S3</span><span class="chip">USB-C link</span>
+      <p>The keychain-sized one. Plug it into a computer or phone over USB-C and
+      it shows up as a small network device. No WiFi, no drivers.</p>
+      <ul>
+        <li><span>Screen</span>1.8" AMOLED touch, 368 × 448</li>
+        <li><span>Connects</span>USB-C network link, <code>http://10.77.7.1</code></li>
+        <li><span>Works with</span>Signer Link extension, NIP-46 bunker</li>
+        <li><span>Storage</span>16 MB flash, PSRAM, microSD slot</li>
+        <li><span>Firmware</span><code>pocket-signer-s3-…bin</code></li>
+      </ul>
+      <a class="btn alt" href="https://www.waveshare.com/esp32-s3-touch-amoled-1.8.htm">View at Waveshare ↗</a>
+    </div>
+    <div class="dev">
+      <h4>Waveshare ESP32-C6 Touch AMOLED 2.16</h4>
+      <span class="chip">ESP32-C6</span><span class="chip">WiFi</span>
+      <p>The bigger screen. It joins your WiFi and talks to Nostr relays directly,
+      so it can sign for a phone or laptop anywhere on your network.</p>
+      <ul>
+        <li><span>Screen</span>2.16" AMOLED touch, 480 × 480</li>
+        <li><span>Connects</span>WiFi, <code>http://pocket-c6.local</code></li>
+        <li><span>Works with</span>NIP-46 bunker over relays</li>
+        <li><span>Storage</span>16 MB flash, microSD slot</li>
+        <li><span>Extras</span>Dice + voice + chip entropy for new seeds</li>
+        <li><span>Firmware</span><code>pocket-c6-…bin</code></li>
+      </ul>
+      <a class="btn alt" href="https://www.waveshare.com/esp32-c6-touch-amoled-2.16.htm">View at Waveshare ↗</a>
+    </div>
+  </div>
+  <div class="note">We don't sell hardware. Buy the board from Waveshare or any
+  electronics shop that stocks it. The exact model matters, because the firmware
+  is built for each board's screen, touch and SD-card wiring. Other ESP32 boards
+  will not work. A microSD card is optional but useful for key backups and
+  air-gapped PSBT signing.</div>
 </section>
 
 <section>
-  <h3>Features</h3>
+  <h3>What it does</h3>
   <div class="feat">
     <div><b>Real signatures, on-device</b>BIP-340 Schnorr signatures computed on the
-    device with hardware-entropy nonces, self-verified before returning.</div>
+    board with hardware-entropy nonces, self-verified before they leave.</div>
     <div><b>Tap to approve</b>Every event and transaction is shown on screen. Nothing
-    signs without a physical tap.</div>
-    <div><b>Bitcoin PSBT review</b>Taproot PSBT parsing and signing on-device —
-    outputs, amounts, and change shown before you approve.</div>
-    <div><b>USB-C network link</b>No drivers, no pairing. The device serves its own
-    pages at http://10.77.7.1 and rejects requests from foreign web origins.</div>
-    <div><b>Multi-account</b>Up to 8 keypairs. Import via SD card, switch on-screen.</div>
-    <div><b>Air-gap option</b>Sign PSBTs from an SD card with no network link at all.</div>
+    signs without a tap.</div>
+    <div><b>Bitcoin PSBT review</b>Taproot PSBTs are parsed on the board. You see the
+    outputs, amounts and change before you approve, on XBT or BTC.</div>
+    <div><b>NIP-46 bunker</b>Log in to nostronchain.com or any Nostr client with a
+    <code>bunker://</code> link. The key never leaves the board.</div>
+    <div><b>Many accounts</b>Up to 21 keypairs. Generate them on the board, or import
+    from microSD, and switch on screen.</div>
+    <div><b>Air-gap option</b>Sign PSBTs from a microSD card with no network
+    connection at all.</div>
   </div>
 </section>
 
-<section>
-  <h3>How to use</h3>
-  <ol class="how">
-    <li>Plug the device into your computer over USB-C.</li>
-    <li>Install the <a href="https://nostronchain.com/signer-link" style="color:var(--txt)">Signer Link extension</a>,
-    or open <span style="font-family:ui-monospace,Menlo,monospace">http://10.77.7.1</span> directly.</li>
-    <li>Log into any Nostr client via extension — signing requests appear on the device.</li>
-    <li>For Bitcoin: build a PSBT in <a href="https://nostronchain.com/nostrtx" style="color:var(--txt)">nostrtx</a>,
-    send it to the device, review the outputs on screen, tap to sign.</li>
+<section id="guide">
+  <h3>Flashing guide</h3>
+  <ol class="guide">
+    <li>
+      <h4>Get what you need</h4>
+      <ul>
+        <li>One of the <a class="inl" href="#devices">supported boards</a>.</li>
+        <li>A USB-C <b>data</b> cable. Charge-only cables are the most common reason flashing fails.</li>
+        <li>A computer with Python 3. Install the flashing tool with:
+          <pre>python3 -m pip install esptool</pre></li>
+      </ul>
+    </li>
+
+    <li>
+      <h4>Download the firmware</h4>
+      <p>Get the files for your board from the
+      <a class="inl" href="https://github.com/satoshipuzzles/pocket-signer-firmware/releases/latest">latest release</a>.
+      On a brand-new board, use the <b>full</b> image. To update a board that
+      already has your keys, use the <b>app</b> image (step 7).</p>
+      <div class="tabs">
+        <div><b>ESP32-S3 AMOLED 1.8</b>
+          <a class="inl" href="https://github.com/satoshipuzzles/pocket-signer-firmware/releases/download/v1.2.0/pocket-signer-s3-full-v1.2.0-ERASES-KEYS.bin">Full image (new board)</a><br>
+          <a class="inl" href="https://github.com/satoshipuzzles/pocket-signer-firmware/releases/download/v1.2.0/pocket-signer-s3-app-v1.2.0.bin">App image (update)</a></div>
+        <div><b>ESP32-C6 AMOLED 2.16</b>
+          <a class="inl" href="https://github.com/satoshipuzzles/pocket-signer-firmware/releases/download/v1.2.0/pocket-c6-full-v1.2.0-ERASES-KEYS.bin">Full image (new board)</a><br>
+          <a class="inl" href="https://github.com/satoshipuzzles/pocket-signer-firmware/releases/download/v1.2.0/pocket-c6-app-v1.2.0.bin">App image (update)</a></div>
+      </div>
+      <p style="margin-top:10px">Download <a class="inl" href="https://github.com/satoshipuzzles/pocket-signer-firmware/releases/download/v1.2.0/SHA256SUMS.txt">SHA256SUMS.txt</a>
+      too, and check your download against it:</p>
+      <pre>shasum -a 256 -c SHA256SUMS.txt --ignore-missing</pre>
+    </li>
+
+    <li>
+      <h4>Connect the board</h4>
+      <div class="tabs">
+        <div><b>ESP32-S3</b>Hold the <b>BOOT</b> button, plug the board in, then
+        let go. The board is now waiting to be flashed.</div>
+        <div><b>ESP32-C6</b>Just plug it in. It switches into flashing mode by itself.</div>
+      </div>
+      <p style="margin-top:10px">Find its port:</p>
+      <ul>
+        <li>macOS: <code>ls /dev/cu.usbmodem*</code></li>
+        <li>Linux: <code>ls /dev/ttyACM*</code></li>
+        <li>Windows: Device Manager → Ports, look for a new <code>COM</code> port</li>
+      </ul>
+    </li>
+
+    <li>
+      <h4>Flash it</h4>
+      <p>Replace <code>PORT</code> with the port you found. For a new board:</p>
+      <p><b>ESP32-S3</b></p>
+      <pre>python3 -m esptool --chip esp32s3 --port PORT write-flash 0x0 pocket-signer-s3-full-v1.2.0-ERASES-KEYS.bin</pre>
+      <p><b>ESP32-C6</b></p>
+      <pre>python3 -m esptool --chip esp32c6 --port PORT --baud 921600 write-flash 0x0 pocket-c6-full-v1.2.0-ERASES-KEYS.bin</pre>
+      <p>When it finishes, unplug the board and plug it back in. The Pocket Signer screen should come up.</p>
+    </li>
+
+    <li>
+      <h4>Add your keys</h4>
+      <div class="tabs">
+        <div><b>ESP32-S3</b>With the board plugged in, open
+        <code>http://10.77.7.1</code>. A new board says "No keys yet". Generate
+        a key on the board, or import one from microSD.</div>
+        <div><b>ESP32-C6</b>On your phone or laptop, join the WiFi network
+        <code>PocketC6</code> (password <code>nostronchain</code>). Open
+        <code>http://192.168.9.1</code> and pick your home WiFi. Then, on the
+        board, go to Accounts → + to generate a key or enter seed words.</div>
+      </div>
+      <p style="margin-top:10px">To import keys from microSD, put
+      <code>nostr-keys.json</code> or <code>nostr-keys.txt</code> in the root of
+      the card. Then go to Accounts → Import on the board. Every import and every
+      backup needs a tap on Approve.</p>
+      <p><b>Back up every key you generate</b>, by writing down its seed words or
+      exporting it to microSD. If the board is lost or wiped, the backup is the only way back.</p>
+    </li>
+
+    <li>
+      <h4>Log in to nostronchain.com</h4>
+      <ul>
+        <li>Open the bridge page. On the S3 that's <code>http://10.77.7.1/bridge</code>; on the C6 it's
+          <code>http://pocket-c6.local/bridge</code>, or scan the QR under Settings → Connect.</li>
+        <li>Tap <b>Enable background mode</b> first, then copy the <code>bunker://</code> link.</li>
+        <li>On <a class="inl" href="https://nostronchain.com/">nostronchain.com</a>, choose
+          <b>Login with Bunker</b>. If you're already signed in, use
+          <b>Settings → Accounts → Add account → Bunker (NIP-46)</b>.</li>
+        <li>Approve the connection on the board. From then on, every note and every
+          transaction is approved on its screen.</li>
+      </ul>
+      <p>The S3 also works with the
+      <a class="inl" href="https://nostronchain.com/signer-link">Signer Link extension</a> for
+      logging in to any Nostr site through your browser.</p>
+    </li>
+
+    <li>
+      <h4>Updating later</h4>
+      <p>Flash the <b>app</b> image at <code>0x10000</code>. It replaces the firmware and keeps your keys.</p>
+      <pre>python3 -m esptool --chip esp32s3 --port PORT write-flash 0x10000 pocket-signer-s3-app-v1.2.0.bin
+python3 -m esptool --chip esp32c6 --port PORT --baud 921600 write-flash 0x10000 pocket-c6-app-v1.2.0.bin</pre>
+      <div class="warn"><b>Full images erase your keys.</b> Never flash a
+      <code>…ERASES-KEYS.bin</code> file or run <code>erase-flash</code> on a board
+      with keys you haven't backed up.</div>
+    </li>
   </ol>
+  <p class="note">Want to build from source? The
+  <a class="inl" href="https://github.com/satoshipuzzles/pocket-signer-firmware">firmware repo</a>
+  has the Arduino build settings for both boards.</p>
 </section>
 
 <section>
   <h3>FAQ</h3>
   <details><summary>Can a website steal my keys?</summary>
-  <p>No. Keys never cross the network — only signatures do. The API also rejects
-  requests from arbitrary web origins, so pages you visit can't even read your
-  public key without approval.</p></details>
-  <details><summary>What happens if I lose the device?</summary>
-  <p>Restore from your backup (SD-card export). A device PIN and encrypted key
-  storage are on the roadmap — until then, treat the device like cash.</p></details>
+  <p>No. Keys never cross the network, only signatures do. The board also rejects
+  requests from other websites, so pages you visit can't even read your public
+  key without your approval.</p></details>
+  <details><summary>What happens if I lose the board?</summary>
+  <p>Restore your keys onto a new board from your backup (seed words or microSD
+  export). Treat an unlocked board like cash.</p></details>
   <details><summary>Does it work with real funds?</summary>
   <p>It produces real, valid signatures. As with any young signer, start with
-  testnet or small amounts and verify everything.</p></details>
+  small amounts and check everything on the screen before you approve.</p></details>
+  <details><summary>Will it run on my other ESP32 board?</summary>
+  <p>Only the two boards above for now. The firmware depends on each board's
+  screen, touch controller and SD wiring.</p></details>
 </section>
 
 <footer>

@@ -4,7 +4,7 @@ Landing page and product pages for the Nostr Onchain suite. Static HTML/CSS with
 
 ## Domains
 
-- `nostronchain.com` (canonical, catalog + product pages + `/store` preorder + `/nip05` paid identifier service)
+- `nostronchain.com` (canonical, catalog + product pages + `/nip05` paid identifier service; `/store` is now a "preorders closed" notice)
 - `pocketsigner.com` (aliased, `/` redirects to `/pocket-signer`)
 
 ## Environment variables
